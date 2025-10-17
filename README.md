@@ -1,2 +1,7 @@
-# SampleProject1
-Sample projects I'm working on
+Project Details::
+
+Install Steps::
+
+Prod URL::
+
+Some additional notes
