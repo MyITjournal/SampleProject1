@@ -1,14 +1,12 @@
 /*****************************************************************************
  *Modification History
- * v0.1: A.ADEY: 2025-10-18:  Initial Design - with select, create, update, delete
- *v0.2: A.ADEBAYO: 2015-10-18: Added /me endpoint that selects a user and randomly
- *                            ...fetches a cat fact
- *v0.3: A.ADEBAYO: 2015-10-18: Optimizations to only return my details
- * ******************************************************************************/
+ *v0.1: A.ADEBAYO: 2015-10-18: Added /me endpoint that selects a user and randomly
+ *v0.2: A.ADEBAYO: 2015-10-18: Added database version under /dbuser/me
+ ******************************************************************************/
 import dotenv from "dotenv";
 import express from "express";
-import mysql from "mysql2";
 import axios from "axios";
+import dbUserRouter from './dbUser.js';
 
 //load the environment variables
 dotenv.config();
@@ -20,56 +18,10 @@ app.use(express.json());
 
 const port = process.env.PORT || 3000;
 
-// Setup MySQL connection
-const db = mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-});
+// Add database user routes under /dbuser prefix
+app.use('/dbuser', dbUserRouter);
 
-// Connect to MySQL
-db.connect((err) => {
-  if (err) {
-    console.error("Error connecting to MySQL:", err.message);
-    return;
-  }
-  console.log(`Connected to MySQL database: ${process.env.DB_NAME}`);
-});
-
-// Function to get just one user
-const getUser = () => {
-  return new Promise((resolve, reject) => {
-    // First verify if table exists
-    db.query("SHOW TABLES LIKE 'user_profiles'", (err, tables) => {
-      if (err) {
-        console.error("Error checking table:", err);
-        return reject(err);
-      }
-
-      if (tables.length === 0) {
-        console.error("Table 'user_profiles' does not exist");
-        return reject(new Error("Table does not exist"));
-      }
-
-      // If table exists, return hard-coded user values temporarily
-      const query =
-        "SELECT 'Adeyoola Adebayo' AS user_name, 'adeaboyade@gmail.com' AS email FROM user_profiles LIMIT 1";
-      db.query(query, (err, results) => {
-        if (err) {
-          console.error("Database query error:", err);
-          return reject(err);
-        }
-        if (!results || results.length === 0) {
-          return resolve(null);
-        }
-        resolve(results[0]);
-      });
-    });
-  });
-};
-
-// Route to get the user with a random cat fact
+// Original hardcoded /me route
 app.get("/me", async (req, res) => {
   try {
     // Use hard-coded user info instead of querying the database
@@ -95,7 +47,7 @@ app.get("/me", async (req, res) => {
       user: {
         email: user.email,
         name: user.user_name,
-        stack: "Node.js / Express / MySQL",
+        stack: "Node.js / Express / PostgreSQL",
       },
       timestamp: new Date().toISOString(),
       fact: catFactResponse.data?.fact || null,
