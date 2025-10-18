@@ -72,11 +72,25 @@ const getUser = () => {
 // Route to get the user with a random cat fact
 app.get("/me", async (req, res) => {
   try {
-    // Use hard-coded user info instead of querying the database
-    const user = {
-      user_name: "Adeyoola Adebayo",
-      email: "adeaboyade@gmail.com",
-    };
+    let user;
+    try {
+      user = await getUser();
+    } catch (dbError) {
+      console.error("Database error:", dbError);
+      return res.status(500).json({
+        status: "error",
+        message: "Database error: " + dbError.message,
+        timestamp: new Date().toISOString(),
+      });
+    }
+
+    if (!user) {
+      return res.status(404).json({
+        status: "error",
+        message: "No user found in database",
+        timestamp: new Date().toISOString(),
+      });
+    }
 
     let catFactResponse;
     try {
@@ -98,7 +112,7 @@ app.get("/me", async (req, res) => {
         stack: "Node.js / Express / MySQL",
       },
       timestamp: new Date().toISOString(),
-      fact: catFactResponse.data?.fact || null,
+      fact: catFactResponse.data.fact,
     });
   } catch (error) {
     console.error("Unexpected error:", error);
