@@ -1,18 +1,18 @@
-#**A DYNAMIC USER PROFILE API**
+# A DYNAMIC USER PROFILE API
 
-##**Project Details**
+## Project Details
 
 This is a simple RESTful API that returns a user's profile information along with a dynamic cat fact fetched from an external API in a json format.
 
 It demonstrates the fundamentals of backend API development — routing, database connection, environment configuration, and clean code structure. It also allows the user to create, view, and update profile information dynamically from a connected database.
 
-#Tech Stack:
+## Tech Stack:
 
 1. Language - NodeJs (ESM)
 2. Framework - Express
 3. Database - MySQL
 
-#**_#Dependencies installed:_**
+## #Dependencies installed:
 
 - express - This is the web server framework
 - mysql2 - This version works better (than mysql) with recent versions of MYSQL
@@ -20,10 +20,11 @@ It demonstrates the fundamentals of backend API development — routing, databas
 - axios - To handle fetching data from a third party API
 - nodemon - To ensure that the server starts automatically
 
-Git repository
+## **Git repository**
+
 https://github.com/MyITjournal/SampleProject1.git
 
-##Installation Steps:
+## Installation Steps:
 
 1.  Create a folder where you want the project to be installed.
 
@@ -48,7 +49,6 @@ https://github.com/MyITjournal/SampleProject1.git
         DB_NAME=your_profile_db
         DB_PORT=your_db_port
         PORT=3000
-        DB_DIALECT=mysql
 
         ```
 
@@ -62,12 +62,22 @@ https://github.com/MyITjournal/SampleProject1.git
 
     `npm run dev`
 
-##API ENDPOINTS
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-/GET | /users | Get a user’s profile |
+## API ENDPOINTS
+
+| Method | Endpoint | Description          |
+| ------ | -------- | -------------------- |
+| /GET   | /users   | Get a user’s profile |
 
 Production URL:
-http://localhost:3000/
+http://localhost:3000/me
 
-###FOLDER STRUCTURE
+## FOLDER STRUCTURE
+
+PROJECT1/
+│
+├── src/
+│   └── index.js
+│   └── index.js
+├── .env
+├── package.json
+└── README.md
