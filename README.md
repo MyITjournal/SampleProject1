@@ -4,9 +4,9 @@
 
 This is a simple RESTful API that returns a user's profile information along with a dynamic cat fact fetched from an external API in a json format.
 
-It demonstrates the fundamentals of backend API development — routing, database connection, environment configuration, and clean code structure. It also allows users to create, view, and update their profile information dynamically from a connected database.
+It demonstrates the fundamentals of backend API development — routing, database connection, environment configuration, and clean code structure. It also allows the user to create, view, and update profile information dynamically from a connected database.
 
-####Tech Stack:
+#Tech Stack:
 
 1. Language - NodeJs (ESM)
 2. Framework - Express
@@ -21,7 +21,7 @@ It demonstrates the fundamentals of backend API development — routing, databas
 - nodemon - To ensure that the server starts automatically
 
 Git repository
-https://github.com/MyITjournal/.git
+https://github.com/MyITjournal/SampleProject1.git
 
 ##Installation Steps:
 
@@ -33,7 +33,7 @@ https://github.com/MyITjournal/.git
 
 3.  Clone the repository
 
-    `git clone https://github.com/MyITjournal/.git`
+    `git clone https://github.com/MyITjournal/SampleProject1.git`
 
 4.  Install the dependences
 
