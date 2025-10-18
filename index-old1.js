@@ -154,7 +154,5 @@ app.get("/me", async (req, res) => {
   }
 });
 
-// Start the server
-app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`);
-});
+// Export the app for use in other files
+export default app;
