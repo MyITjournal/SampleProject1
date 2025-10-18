@@ -5,7 +5,7 @@
  *                            ...fetches a cat fact
  *v0.3: A.ADEBAYO: 2015-10-18: Optimizations to only return my details
  *v0.4: A.ADEBAYO: 2015-10-18: Changed database from MySQL to PostgreSQL
- *v0.5: A.ADEBAYO: 2015-10-18: Updated to use new PostgreSQL users table schema
+ *v0.5: A.ADEBAYO: 2015-10-18: Updated to use new PostgreSQL users table schema.
  * ******************************************************************************/
 import dotenv from "dotenv";
 import express from "express";
