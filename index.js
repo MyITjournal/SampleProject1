@@ -52,8 +52,9 @@ const getUser = () => {
         return reject(new Error("Table does not exist"));
       }
 
-      // If table exists, get the user
-      const query = "SELECT user_name, email FROM user_profiles LIMIT 1";
+      // If table exists, return hard-coded user values temporarily
+      const query =
+        "SELECT 'Adeyoola Adebayo' AS user_name, 'adeaboyade@gmail.com' AS email FROM user_profiles LIMIT 1";
       db.query(query, (err, results) => {
         if (err) {
           console.error("Database query error:", err);
