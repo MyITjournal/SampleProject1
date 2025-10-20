@@ -1,27 +1,30 @@
-import express from 'express';
+import express from "express";
 import {
   createString,
   getStringById,
   getAllStrings,
   deleteString,
-  processNaturalQuery
-} from './stringController.js';
+  processNaturalQuery,
+  processNaturalQueryGet,
+} from "./stringController.js";
 
 const router = express.Router();
 
-// Natural query route MUST come before /:id route
-router.post('/strings/query', processNaturalQuery);
+// IMPORTANT: Specific routes MUST come before parameterized routes
+// Natural query route (specific path)
+router.get("/strings/filter-by-natural-language", processNaturalQueryGet);
+
+// POST natural query (specific path)
+router.post("/strings/query", processNaturalQuery);
 
 // Create string
-router.post('/strings', createString);
+router.post("/strings", createString);
 
 // Get all strings (with optional filters)
-router.get('/strings', getAllStrings);
+router.get("/strings", getAllStrings);
 
-// Get string by ID
-router.get('/strings/:id', getStringById);
-
-// Delete string by ID
-router.delete('/strings/:id', deleteString);
+// Parameterized routes MUST come last
+router.get("/strings/:id", getStringById);
+router.delete("/strings/:id", deleteString);
 
 export default router;
