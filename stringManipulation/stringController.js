@@ -19,12 +19,17 @@ const pool = new Pool({
 const analyzeString = (text) => {
   const length = text.length;
   const vowels = (text.match(/[aeiouAEIOU]/g) || []).length;
-  const consonants = (text.match(/[bcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ]/g) || []).length;
-  const words = text.trim().split(/\s+/).filter(word => word.length > 0).length;
+  const consonants = (
+    text.match(/[bcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ]/g) || []
+  ).length;
+  const words = text
+    .trim()
+    .split(/\s+/)
+    .filter((word) => word.length > 0).length;
   const uniqueChars = new Set(text).size;
-  const cleanText = text.toLowerCase().replace(/[^a-z0-9]/g, '');
-  const isPalindrome = cleanText === cleanText.split('').reverse().join('');
-  
+  const cleanText = text.toLowerCase().replace(/[^a-z0-9]/g, "");
+  const isPalindrome = cleanText === cleanText.split("").reverse().join("");
+
   return {
     length,
     vowels,
@@ -33,34 +38,36 @@ const analyzeString = (text) => {
     uniqueChars,
     isPalindrome,
     startsWithVowel: /^[aeiouAEIOU]/.test(text),
-    endsWithVowel: /[aeiouAEIOU]$/.test(text)
+    endsWithVowel: /[aeiouAEIOU]$/.test(text),
   };
 };
 
 // Create string entry
 export const createString = async (req, res) => {
   try {
-    const { text } = req.body;
+    // Accept both "value" (per spec) and "text" (for backward compatibility)
+    const value = req.body.value || req.body.text;
 
     // Validation
-    if (!text || typeof text !== 'string') {
+    if (!value || typeof value !== "string") {
       return res.status(400).json({
         status: "error",
-        message: "Invalid input: 'text' field is required and must be a string",
-        timestamp: new Date().toISOString()
+        message:
+          "Invalid input: 'value' field is required and must be a string",
+        timestamp: new Date().toISOString(),
       });
     }
 
-    if (text.trim().length === 0) {
+    if (value.trim().length === 0) {
       return res.status(400).json({
         status: "error",
-        message: "Invalid input: 'text' cannot be empty",
-        timestamp: new Date().toISOString()
+        message: "Invalid input: 'value' cannot be empty",
+        timestamp: new Date().toISOString(),
       });
     }
 
-    const analysis = analyzeString(text);
-    
+    const analysis = analyzeString(value);
+
     const query = `
       INSERT INTO strings (text, length, vowels, consonants, words, unique_chars, is_palindrome, starts_with_vowel, ends_with_vowel)
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
@@ -68,9 +75,9 @@ export const createString = async (req, res) => {
                 is_palindrome as "isPalindrome", starts_with_vowel as "startsWithVowel", 
                 ends_with_vowel as "endsWithVowel", created_at as "createdAt"
     `;
-    
+
     const values = [
-      text,
+      value,
       analysis.length,
       analysis.vowels,
       analysis.consonants,
@@ -78,7 +85,7 @@ export const createString = async (req, res) => {
       analysis.uniqueChars,
       analysis.isPalindrome,
       analysis.startsWithVowel,
-      analysis.endsWithVowel
+      analysis.endsWithVowel,
     ];
 
     const result = await pool.query(query, values);
@@ -87,15 +94,14 @@ export const createString = async (req, res) => {
       status: "success",
       message: "String created successfully",
       data: result.rows[0],
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
-
   } catch (error) {
     console.error("Error creating string:", error);
     return res.status(500).json({
       status: "error",
       message: "Internal server error",
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
   }
 };
@@ -110,7 +116,7 @@ export const getStringById = async (req, res) => {
       return res.status(400).json({
         status: "error",
         message: "Invalid ID format",
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       });
     }
 
@@ -128,22 +134,21 @@ export const getStringById = async (req, res) => {
       return res.status(404).json({
         status: "error",
         message: `String with id ${id} not found`,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       });
     }
 
     return res.status(200).json({
       status: "success",
       data: result.rows[0],
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
-
   } catch (error) {
     console.error("Error fetching string:", error);
     return res.status(500).json({
       status: "error",
       message: "Internal server error",
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
   }
 };
@@ -151,19 +156,19 @@ export const getStringById = async (req, res) => {
 // Get all strings with optional filtering
 export const getAllStrings = async (req, res) => {
   try {
-    const { 
-      minLength, 
-      maxLength, 
-      isPalindrome, 
+    const {
+      minLength,
+      maxLength,
+      isPalindrome,
       startsWithVowel,
       endsWithVowel,
       minWords,
       maxWords,
       query: searchQuery,
-      sortBy = 'createdAt',
-      order = 'DESC',
+      sortBy = "createdAt",
+      order = "DESC",
       limit = 100,
-      offset = 0
+      offset = 0,
     } = req.query;
 
     let queryText = `
@@ -173,7 +178,7 @@ export const getAllStrings = async (req, res) => {
       FROM strings
       WHERE 1=1
     `;
-    
+
     const params = [];
     let paramCount = 1;
 
@@ -206,19 +211,19 @@ export const getAllStrings = async (req, res) => {
     // Boolean filters
     if (isPalindrome !== undefined) {
       queryText += ` AND is_palindrome = $${paramCount}`;
-      params.push(isPalindrome === 'true');
+      params.push(isPalindrome === "true");
       paramCount++;
     }
 
     if (startsWithVowel !== undefined) {
       queryText += ` AND starts_with_vowel = $${paramCount}`;
-      params.push(startsWithVowel === 'true');
+      params.push(startsWithVowel === "true");
       paramCount++;
     }
 
     if (endsWithVowel !== undefined) {
       queryText += ` AND ends_with_vowel = $${paramCount}`;
-      params.push(endsWithVowel === 'true');
+      params.push(endsWithVowel === "true");
       paramCount++;
     }
 
@@ -230,16 +235,22 @@ export const getAllStrings = async (req, res) => {
     }
 
     // Sorting
-    const validSortFields = ['createdAt', 'length', 'words', 'vowels', 'consonants'];
-    const sortField = validSortFields.includes(sortBy) ? sortBy : 'createdAt';
-    const sortOrder = order.toUpperCase() === 'ASC' ? 'ASC' : 'DESC';
-    
+    const validSortFields = [
+      "createdAt",
+      "length",
+      "words",
+      "vowels",
+      "consonants",
+    ];
+    const sortField = validSortFields.includes(sortBy) ? sortBy : "createdAt";
+    const sortOrder = order.toUpperCase() === "ASC" ? "ASC" : "DESC";
+
     const sortFieldMap = {
-      'createdAt': 'created_at',
-      'length': 'length',
-      'words': 'words',
-      'vowels': 'vowels',
-      'consonants': 'consonants'
+      createdAt: "created_at",
+      length: "length",
+      words: "words",
+      vowels: "vowels",
+      consonants: "consonants",
     };
 
     queryText += ` ORDER BY ${sortFieldMap[sortField]} ${sortOrder}`;
@@ -251,7 +262,9 @@ export const getAllStrings = async (req, res) => {
     const result = await pool.query(queryText, params);
 
     // Get total count for pagination
-    const countQuery = `SELECT COUNT(*) FROM strings WHERE 1=1${queryText.split('WHERE 1=1')[1].split('ORDER BY')[0]}`;
+    const countQuery = `SELECT COUNT(*) FROM strings WHERE 1=1${
+      queryText.split("WHERE 1=1")[1].split("ORDER BY")[0]
+    }`;
     const countResult = await pool.query(countQuery, params.slice(0, -2));
 
     return res.status(200).json({
@@ -261,15 +274,14 @@ export const getAllStrings = async (req, res) => {
       limit: parseInt(limit),
       offset: parseInt(offset),
       data: result.rows,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
-
   } catch (error) {
     console.error("Error fetching strings:", error);
     return res.status(500).json({
       status: "error",
       message: "Internal server error",
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
   }
 };
@@ -284,12 +296,12 @@ export const deleteString = async (req, res) => {
       return res.status(400).json({
         status: "error",
         message: "Invalid ID format",
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       });
     }
 
     const result = await pool.query(
-      'DELETE FROM strings WHERE id = $1 RETURNING id, text', 
+      "DELETE FROM strings WHERE id = $1 RETURNING id, text",
       [id]
     );
 
@@ -297,7 +309,7 @@ export const deleteString = async (req, res) => {
       return res.status(404).json({
         status: "error",
         message: `String with id ${id} not found`,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       });
     }
 
@@ -306,17 +318,16 @@ export const deleteString = async (req, res) => {
       message: `String with id ${id} deleted successfully`,
       data: {
         id: result.rows[0].id,
-        text: result.rows[0].text
+        text: result.rows[0].text,
       },
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
-
   } catch (error) {
     console.error("Error deleting string:", error);
     return res.status(500).json({
       status: "error",
       message: "Internal server error",
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
   }
 };
@@ -326,11 +337,12 @@ export const processNaturalQuery = async (req, res) => {
   try {
     const { query } = req.body;
 
-    if (!query || typeof query !== 'string') {
+    if (!query || typeof query !== "string") {
       return res.status(400).json({
         status: "error",
-        message: "Invalid input: 'query' field is required and must be a string",
-        timestamp: new Date().toISOString()
+        message:
+          "Invalid input: 'query' field is required and must be a string",
+        timestamp: new Date().toISOString(),
       });
     }
 
@@ -341,25 +353,34 @@ export const processNaturalQuery = async (req, res) => {
       FROM strings
       WHERE 1=1
     `;
-    
+
     const params = [];
     let paramCount = 1;
     const queryLower = query.toLowerCase();
 
     // Parse natural language queries
-    if (queryLower.includes('palindrome')) {
+    if (queryLower.includes("palindrome")) {
       sqlQuery += ` AND is_palindrome = true`;
     }
 
-    if (queryLower.includes('not palindrome') || queryLower.includes('non-palindrome')) {
+    if (
+      queryLower.includes("not palindrome") ||
+      queryLower.includes("non-palindrome")
+    ) {
       sqlQuery += ` AND is_palindrome = false`;
     }
 
-    if (queryLower.includes('starts with vowel') || queryLower.includes('beginning with vowel')) {
+    if (
+      queryLower.includes("starts with vowel") ||
+      queryLower.includes("beginning with vowel")
+    ) {
       sqlQuery += ` AND starts_with_vowel = true`;
     }
 
-    if (queryLower.includes('ends with vowel') || queryLower.includes('ending with vowel')) {
+    if (
+      queryLower.includes("ends with vowel") ||
+      queryLower.includes("ending with vowel")
+    ) {
       sqlQuery += ` AND ends_with_vowel = true`;
     }
 
@@ -385,10 +406,15 @@ export const processNaturalQuery = async (req, res) => {
       paramCount++;
     }
 
-    const lengthBetweenMatch = queryLower.match(/between (\d+) and (\d+) characters?/i);
+    const lengthBetweenMatch = queryLower.match(
+      /between (\d+) and (\d+) characters?/i
+    );
     if (lengthBetweenMatch) {
       sqlQuery += ` AND length BETWEEN $${paramCount} AND $${paramCount + 1}`;
-      params.push(parseInt(lengthBetweenMatch[1]), parseInt(lengthBetweenMatch[2]));
+      params.push(
+        parseInt(lengthBetweenMatch[1]),
+        parseInt(lengthBetweenMatch[2])
+      );
       paramCount += 2;
     }
 
@@ -423,20 +449,22 @@ export const processNaturalQuery = async (req, res) => {
       status: "success",
       query: query,
       interpretation: {
-        filters: params.length > 0 ? "Applied filters based on query" : "No specific filters detected",
-        resultsFound: result.rows.length
+        filters:
+          params.length > 0
+            ? "Applied filters based on query"
+            : "No specific filters detected",
+        resultsFound: result.rows.length,
       },
       count: result.rows.length,
       data: result.rows,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
-
   } catch (error) {
     console.error("Error processing query:", error);
     return res.status(500).json({
       status: "error",
       message: "Internal server error",
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
   }
 };
