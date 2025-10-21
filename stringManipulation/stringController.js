@@ -620,7 +620,7 @@ export const processNaturalQueryGet = async (req, res) => {
 // Helper function to parse natural language queries
 const parseNaturalLanguageQuery = (query) => {
   let sqlQuery = `
-    SELECT id, text, length, vowels, consonants, words, unique_chars as "uniqueChars",
+    SELECT sha256_hash, text as "value", length, vowels, consonants, words, unique_chars as "uniqueChars",
            is_palindrome as "isPalindrome", starts_with_vowel as "startsWithVowel",
            ends_with_vowel as "endsWithVowel", created_at as "createdAt"
     FROM strings

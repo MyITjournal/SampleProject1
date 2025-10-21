@@ -1,7 +1,6 @@
 --DROP TABLE IF EXISTS public.strings CASCADE;
 
 CREATE TABLE IF NOT EXISTS strings (
-    id SERIAL,
     sha256_hash VARCHAR(64) PRIMARY KEY,
     text TEXT NOT NULL,
     length INTEGER NOT NULL,
@@ -17,7 +16,6 @@ CREATE TABLE IF NOT EXISTS strings (
 );
 
 -- Drop existing indexes if they exist
-DROP INDEX IF EXISTS idx_strings_sha256;
 DROP INDEX IF EXISTS idx_strings_length;
 DROP INDEX IF EXISTS idx_strings_words;
 DROP INDEX IF EXISTS idx_strings_palindrome;
@@ -27,7 +25,6 @@ DROP INDEX IF EXISTS idx_strings_created;
 DROP INDEX IF EXISTS idx_strings_text_search;
 
 -- Create indexes
-CREATE INDEX idx_strings_sha256 ON strings(sha256_hash);
 CREATE INDEX idx_strings_length ON strings(length);
 CREATE INDEX idx_strings_words ON strings(words);
 CREATE INDEX idx_strings_palindrome ON strings(is_palindrome);
