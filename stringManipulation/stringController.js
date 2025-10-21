@@ -1,19 +1,34 @@
 import pg from "pg";
 import dotenv from "dotenv";
+import crypto from "crypto";
 
 const { Pool } = pg;
 dotenv.config();
 
-const pool = new Pool({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-  port: process.env.DB_PORT || 5432,
-  max: 20,
-  idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 2000,
-});
+const pool = new Pool(
+  process.env.DATABASE_URL
+    ? {
+        connectionString: process.env.DATABASE_URL,
+        ssl: {
+          rejectUnauthorized: false,
+        },
+      }
+    : {
+        host: process.env.DB_HOST,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_NAME,
+        port: process.env.DB_PORT || 5432,
+        max: 20,
+        idleTimeoutMillis: 30000,
+        connectionTimeoutMillis: 2000,
+      }
+);
+
+// Helper function to generate SHA-256 hash
+const generateSHA256 = (text) => {
+  return crypto.createHash("sha256").update(text).digest("hex");
+};
 
 // Helper function to analyze string properties
 const analyzeString = (text) => {
@@ -30,6 +45,14 @@ const analyzeString = (text) => {
   const cleanText = text.toLowerCase().replace(/[^a-z0-9]/g, "");
   const isPalindrome = cleanText === cleanText.split("").reverse().join("");
 
+  // Calculate character frequency map
+  const characterFrequencyMap = {};
+  for (const char of text) {
+    characterFrequencyMap[char] = (characterFrequencyMap[char] || 0) + 1;
+  }
+
+  const sha256Hash = generateSHA256(text);
+
   return {
     length,
     vowels,
@@ -39,21 +62,30 @@ const analyzeString = (text) => {
     isPalindrome,
     startsWithVowel: /^[aeiouAEIOU]/.test(text),
     endsWithVowel: /[aeiouAEIOU]$/.test(text),
+    characterFrequencyMap,
+    sha256Hash,
   };
 };
 
 // Create string entry
 export const createString = async (req, res) => {
   try {
-    // Accept both "value" (per spec) and "text" (for backward compatibility)
-    const value = req.body.value || req.body.text;
+    const { value } = req.body;
 
-    // Validation
-    if (!value || typeof value !== "string") {
+    // Validation - 400 Bad Request for missing field
+    if (!value) {
       return res.status(400).json({
         status: "error",
-        message:
-          "Invalid input: 'value' field is required and must be a string",
+        message: "Bad Request: Missing 'value' field in request body",
+        timestamp: new Date().toISOString(),
+      });
+    }
+
+    // Validation - 422 Unprocessable Entity for invalid data type
+    if (typeof value !== "string") {
+      return res.status(422).json({
+        status: "error",
+        message: "Unprocessable Entity: 'value' must be a string",
         timestamp: new Date().toISOString(),
       });
     }
@@ -61,22 +93,54 @@ export const createString = async (req, res) => {
     if (value.trim().length === 0) {
       return res.status(400).json({
         status: "error",
-        message: "Invalid input: 'value' cannot be empty",
+        message: "Bad Request: 'value' cannot be empty",
         timestamp: new Date().toISOString(),
       });
     }
 
     const analysis = analyzeString(value);
+    const sha256Hash = analysis.sha256Hash;
+
+    // Check if string already exists (409 Conflict)
+    const existingCheck = await pool.query(
+      "SELECT sha256_hash FROM strings WHERE sha256_hash = $1",
+      [sha256Hash]
+    );
+
+    if (existingCheck.rows.length > 0) {
+      return res.status(409).json({
+        status: "error",
+        message: "Conflict: String already exists in the system",
+        existing_id: existingCheck.rows[0].sha256_hash,
+        timestamp: new Date().toISOString(),
+      });
+    }
 
     const query = `
-      INSERT INTO strings (text, length, vowels, consonants, words, unique_chars, is_palindrome, starts_with_vowel, ends_with_vowel)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
-      RETURNING id, text, length, vowels, consonants, words, unique_chars as "uniqueChars", 
-                is_palindrome as "isPalindrome", starts_with_vowel as "startsWithVowel", 
-                ends_with_vowel as "endsWithVowel", created_at as "createdAt"
+      INSERT INTO strings (
+        sha256_hash, text, length, vowels, consonants, words, 
+        unique_chars, is_palindrome, starts_with_vowel, ends_with_vowel,
+        character_frequency_map
+      )
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+      RETURNING 
+        sha256_hash as id,
+        text as value,
+        length,
+        vowels,
+        consonants,
+        words,
+        unique_chars as "uniqueCharacters",
+        is_palindrome as "isPalindrome",
+        starts_with_vowel as "startsWithVowel",
+        ends_with_vowel as "endsWithVowel",
+        character_frequency_map as "characterFrequencyMap",
+        sha256_hash as "sha256Hash",
+        created_at as "createdAt"
     `;
 
     const values = [
+      sha256Hash,
       value,
       analysis.length,
       analysis.vowels,
@@ -86,15 +150,24 @@ export const createString = async (req, res) => {
       analysis.isPalindrome,
       analysis.startsWithVowel,
       analysis.endsWithVowel,
+      JSON.stringify(analysis.characterFrequencyMap),
     ];
 
     const result = await pool.query(query, values);
+    const row = result.rows[0];
 
     return res.status(201).json({
-      status: "success",
-      message: "String created successfully",
-      data: result.rows[0],
-      timestamp: new Date().toISOString(),
+      id: row.id,
+      value: row.value,
+      properties: {
+        length: row.length,
+        is_palindrome: row.isPalindrome,
+        unique_characters: row.uniqueCharacters,
+        word_count: row.words,
+        sha256_hash: row.sha256Hash,
+        character_frequency_map: row.characterFrequencyMap, // No JSON.parse needed - PostgreSQL returns JSONB as object
+      },
+      created_at: row.createdAt,
     });
   } catch (error) {
     console.error("Error creating string:", error);
@@ -106,42 +179,139 @@ export const createString = async (req, res) => {
   }
 };
 
-// Get string by ID
+// Get string by ID (SHA-256 hash)
 export const getStringById = async (req, res) => {
   try {
     const { id } = req.params;
 
-    // Validate ID is a number
-    if (isNaN(id)) {
+    // Validate SHA-256 hash format (64 hex characters)
+    const sha256Regex = /^[a-f0-9]{64}$/i;
+    if (!sha256Regex.test(id)) {
       return res.status(400).json({
         status: "error",
-        message: "Invalid ID format",
+        message:
+          "Invalid ID format. Expected SHA-256 hash (64 hexadecimal characters)",
         timestamp: new Date().toISOString(),
       });
     }
 
     const query = `
-      SELECT id, text, length, vowels, consonants, words, unique_chars as "uniqueChars",
-             is_palindrome as "isPalindrome", starts_with_vowel as "startsWithVowel",
-             ends_with_vowel as "endsWithVowel", created_at as "createdAt"
+      SELECT 
+        sha256_hash as id,
+        text as value,
+        length,
+        vowels,
+        consonants,
+        words,
+        unique_chars as "uniqueCharacters",
+        is_palindrome as "isPalindrome",
+        starts_with_vowel as "startsWithVowel",
+        ends_with_vowel as "endsWithVowel",
+        character_frequency_map as "characterFrequencyMap",
+        sha256_hash as "sha256Hash",
+        created_at as "createdAt"
       FROM strings
-      WHERE id = $1
+      WHERE sha256_hash = $1
     `;
 
-    const result = await pool.query(query, [id]);
+    const result = await pool.query(query, [id.toLowerCase()]);
 
     if (result.rows.length === 0) {
       return res.status(404).json({
         status: "error",
-        message: `String with id ${id} not found`,
+        message: "Not Found: String does not exist in the system",
         timestamp: new Date().toISOString(),
       });
     }
 
+    const row = result.rows[0];
+
     return res.status(200).json({
-      status: "success",
-      data: result.rows[0],
+      id: row.id,
+      value: row.value,
+      properties: {
+        length: row.length,
+        is_palindrome: row.isPalindrome,
+        unique_characters: row.uniqueCharacters,
+        word_count: row.words,
+        sha256_hash: row.sha256Hash,
+        character_frequency_map: row.characterFrequencyMap,
+      },
+      created_at: row.createdAt,
+    });
+  } catch (error) {
+    console.error("Error fetching string:", error);
+    return res.status(500).json({
+      status: "error",
+      message: "Internal server error",
       timestamp: new Date().toISOString(),
+    });
+  }
+};
+
+// Get string by actual string value (from URL parameter)
+export const getStringByValue = async (req, res) => {
+  try {
+    const { string_value } = req.params;
+
+    // Decode URL-encoded string
+    const value = decodeURIComponent(string_value);
+
+    // Validation
+    if (!value || typeof value !== "string") {
+      return res.status(400).json({
+        status: "error",
+        message: "Bad Request: Invalid string value",
+        timestamp: new Date().toISOString(),
+      });
+    }
+
+    // Generate SHA-256 hash of the string value
+    const sha256Hash = generateSHA256(value);
+
+    const query = `
+      SELECT 
+        sha256_hash as id,
+        text as value,
+        length,
+        vowels,
+        consonants,
+        words,
+        unique_chars as "uniqueCharacters",
+        is_palindrome as "isPalindrome",
+        starts_with_vowel as "startsWithVowel",
+        ends_with_vowel as "endsWithVowel",
+        character_frequency_map as "characterFrequencyMap",
+        sha256_hash as "sha256Hash",
+        created_at as "createdAt"
+      FROM strings
+      WHERE sha256_hash = $1
+    `;
+
+    const result = await pool.query(query, [sha256Hash]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        status: "error",
+        message: "Not Found: String does not exist in the system",
+        timestamp: new Date().toISOString(),
+      });
+    }
+
+    const row = result.rows[0];
+
+    return res.status(200).json({
+      id: row.id,
+      value: row.value,
+      properties: {
+        length: row.length,
+        is_palindrome: row.isPalindrome,
+        unique_characters: row.uniqueCharacters,
+        word_count: row.words,
+        sha256_hash: row.sha256Hash,
+        character_frequency_map: row.characterFrequencyMap,
+      },
+      created_at: row.createdAt,
     });
   } catch (error) {
     console.error("Error fetching string:", error);
@@ -156,26 +326,17 @@ export const getStringById = async (req, res) => {
 // Get all strings with optional filtering
 export const getAllStrings = async (req, res) => {
   try {
-    // Support both camelCase and snake_case for compatibility
+    // Use only snake_case parameters as per specification
     const {
-      minLength,
       min_length,
-      maxLength,
       max_length,
-      isPalindrome,
       is_palindrome,
-      startsWithVowel,
       starts_with_vowel,
-      endsWithVowel,
       ends_with_vowel,
-      minWords,
       min_words,
-      maxWords,
       max_words,
-      wordCount,
       word_count,
       query: searchQuery,
-      containsCharacter,
       contains_character,
       sortBy = "createdAt",
       order = "DESC",
@@ -183,50 +344,49 @@ export const getAllStrings = async (req, res) => {
       offset = 0,
     } = req.query;
 
-    // Normalize parameters
-    const minLen = minLength || min_length;
-    const maxLen = maxLength || max_length;
-    const palindrome = isPalindrome || is_palindrome;
-    const startsVowel = startsWithVowel || starts_with_vowel;
-    const endsVowel = endsWithVowel || ends_with_vowel;
-    const minWrd = minWords || min_words;
-    const maxWrd = maxWords || max_words;
-    const exactWords = wordCount || word_count;
-    const containsChar = containsCharacter || contains_character;
+    // Track which filters were applied
+    const filtersApplied = {};
 
     // Check if at least one filter is provided
     const hasFilters = !!(
-      minLen ||
-      maxLen ||
-      palindrome !== undefined ||
-      startsVowel !== undefined ||
-      endsVowel !== undefined ||
-      minWrd ||
-      maxWrd ||
-      exactWords ||
+      min_length ||
+      max_length ||
+      is_palindrome !== undefined ||
+      starts_with_vowel !== undefined ||
+      ends_with_vowel !== undefined ||
+      min_words ||
+      max_words ||
+      word_count ||
       searchQuery ||
-      containsChar
+      contains_character
     );
 
-    // If no filters provided, return empty result or all (based on your preference)
+    // If no filters provided, return empty result
     if (!hasFilters) {
       return res.status(200).json({
-        status: "success",
-        count: 0,
-        total: 0,
-        limit: parseInt(limit),
-        offset: parseInt(offset),
         data: [],
+        count: 0,
+        filters_applied: {},
         message:
           "No filters provided. Please specify at least one filter parameter.",
-        timestamp: new Date().toISOString(),
       });
     }
 
     let queryText = `
-      SELECT id, text, length, vowels, consonants, words, unique_chars as "uniqueChars",
-             is_palindrome as "isPalindrome", starts_with_vowel as "startsWithVowel",
-             ends_with_vowel as "endsWithVowel", created_at as "createdAt"
+      SELECT 
+        sha256_hash as id,
+        text as value,
+        length,
+        vowels,
+        consonants,
+        words,
+        unique_chars as "uniqueCharacters",
+        is_palindrome as "isPalindrome",
+        starts_with_vowel as "startsWithVowel",
+        ends_with_vowel as "endsWithVowel",
+        character_frequency_map as "characterFrequencyMap",
+        sha256_hash as "sha256Hash",
+        created_at as "createdAt"
       FROM strings
       WHERE 1=1
     `;
@@ -235,54 +395,65 @@ export const getAllStrings = async (req, res) => {
     let paramCount = 1;
 
     // Length filters
-    if (minLen) {
+    if (min_length) {
       queryText += ` AND length >= $${paramCount}`;
-      params.push(parseInt(minLen));
+      params.push(parseInt(min_length));
       paramCount++;
+      filtersApplied.min_length = parseInt(min_length);
     }
 
-    if (maxLen) {
+    if (max_length) {
       queryText += ` AND length <= $${paramCount}`;
-      params.push(parseInt(maxLen));
+      params.push(parseInt(max_length));
       paramCount++;
+      filtersApplied.max_length = parseInt(max_length);
     }
 
     // Word count filters
-    if (exactWords) {
+    if (word_count) {
       queryText += ` AND words = $${paramCount}`;
-      params.push(parseInt(exactWords));
+      params.push(parseInt(word_count));
       paramCount++;
+      filtersApplied.word_count = parseInt(word_count);
     } else {
-      if (minWrd) {
+      if (min_words) {
         queryText += ` AND words >= $${paramCount}`;
-        params.push(parseInt(minWrd));
+        params.push(parseInt(min_words));
         paramCount++;
+        filtersApplied.min_words = parseInt(min_words);
       }
 
-      if (maxWrd) {
+      if (max_words) {
         queryText += ` AND words <= $${paramCount}`;
-        params.push(parseInt(maxWrd));
+        params.push(parseInt(max_words));
         paramCount++;
+        filtersApplied.max_words = parseInt(max_words);
       }
     }
 
     // Boolean filters
-    if (palindrome !== undefined) {
+    if (is_palindrome !== undefined) {
+      const palindromeValue = is_palindrome === "true";
       queryText += ` AND is_palindrome = $${paramCount}`;
-      params.push(palindrome === "true");
+      params.push(palindromeValue);
       paramCount++;
+      filtersApplied.is_palindrome = palindromeValue;
     }
 
-    if (startsVowel !== undefined) {
+    if (starts_with_vowel !== undefined) {
+      const startsVowelValue = starts_with_vowel === "true";
       queryText += ` AND starts_with_vowel = $${paramCount}`;
-      params.push(startsVowel === "true");
+      params.push(startsVowelValue);
       paramCount++;
+      filtersApplied.starts_with_vowel = startsVowelValue;
     }
 
-    if (endsVowel !== undefined) {
+    if (ends_with_vowel !== undefined) {
+      const endsVowelValue = ends_with_vowel === "true";
       queryText += ` AND ends_with_vowel = $${paramCount}`;
-      params.push(endsVowel === "true");
+      params.push(endsVowelValue);
       paramCount++;
+      filtersApplied.ends_vowel = endsVowelValue;
     }
 
     // Text search
@@ -290,13 +461,15 @@ export const getAllStrings = async (req, res) => {
       queryText += ` AND text ILIKE $${paramCount}`;
       params.push(`%${searchQuery}%`);
       paramCount++;
+      filtersApplied.query = searchQuery;
     }
 
     // Contains character filter
-    if (containsChar) {
+    if (contains_character) {
       queryText += ` AND text ILIKE $${paramCount}`;
-      params.push(`%${containsChar}%`);
+      params.push(`%${contains_character}%`);
       paramCount++;
+      filtersApplied.contains_character = contains_character;
     }
 
     // Sorting
@@ -326,20 +499,25 @@ export const getAllStrings = async (req, res) => {
 
     const result = await pool.query(queryText, params);
 
-    // Get total count for pagination
-    const countQuery = `SELECT COUNT(*) FROM strings WHERE 1=1${
-      queryText.split("WHERE 1=1")[1].split("ORDER BY")[0]
-    }`;
-    const countResult = await pool.query(countQuery, params.slice(0, -2));
+    // Format data to match specification
+    const formattedData = result.rows.map((row) => ({
+      id: row.id,
+      value: row.value,
+      properties: {
+        length: row.length,
+        is_palindrome: row.isPalindrome,
+        unique_characters: row.uniqueCharacters,
+        word_count: row.words,
+        sha256_hash: row.sha256Hash,
+        character_frequency_map: row.characterFrequencyMap,
+      },
+      created_at: row.createdAt,
+    }));
 
     return res.status(200).json({
-      status: "success",
+      data: formattedData,
       count: result.rows.length,
-      total: parseInt(countResult.rows[0].count),
-      limit: parseInt(limit),
-      offset: parseInt(offset),
-      data: result.rows,
-      timestamp: new Date().toISOString(),
+      filters_applied: filtersApplied,
     });
   } catch (error) {
     console.error("Error fetching strings:", error);
@@ -351,39 +529,45 @@ export const getAllStrings = async (req, res) => {
   }
 };
 
-// Delete string by ID
+// Delete string by string value
 export const deleteString = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { string_value } = req.params;
 
-    // Validate ID
-    if (isNaN(id)) {
+    // Decode URL-encoded string
+    const value = decodeURIComponent(string_value);
+
+    // Validation
+    if (!value || typeof value !== "string") {
       return res.status(400).json({
         status: "error",
-        message: "Invalid ID format",
+        message: "Bad Request: Invalid string value",
         timestamp: new Date().toISOString(),
       });
     }
 
+    // Generate SHA-256 hash of the string value
+    const sha256Hash = generateSHA256(value);
+
     const result = await pool.query(
-      "DELETE FROM strings WHERE id = $1 RETURNING id, text",
-      [id]
+      "DELETE FROM strings WHERE sha256_hash = $1 RETURNING sha256_hash as id, text",
+      [sha256Hash]
     );
 
     if (result.rows.length === 0) {
       return res.status(404).json({
         status: "error",
-        message: `String with id ${id} not found`,
+        message: "Not Found: String does not exist in the system",
         timestamp: new Date().toISOString(),
       });
     }
 
     return res.status(200).json({
       status: "success",
-      message: `String with id ${id} deleted successfully`,
+      message: "String deleted successfully",
       data: {
         id: result.rows[0].id,
-        text: result.rows[0].text,
+        value: result.rows[0].text,
       },
       timestamp: new Date().toISOString(),
     });

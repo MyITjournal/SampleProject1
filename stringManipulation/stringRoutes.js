@@ -1,7 +1,7 @@
 import express from "express";
 import {
   createString,
-  getStringById,
+  getStringByValue,
   getAllStrings,
   deleteString,
   processNaturalQuery,
@@ -24,7 +24,8 @@ router.post("/strings", createString);
 router.get("/strings", getAllStrings);
 
 // Parameterized routes MUST come last
-router.get("/strings/:id", getStringById);
-router.delete("/strings/:id", deleteString);
+// Get by string value (the actual string, not hash)
+router.get("/strings/:string_value", getStringByValue);
+router.delete("/strings/:string_value", deleteString);
 
 export default router;
