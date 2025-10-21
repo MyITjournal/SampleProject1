@@ -3,6 +3,7 @@
  *v0.1: A.ADEBAYO: 2015-10-18: Added /me endpoint that selects a user and randomly
  *v0.2: A.ADEBAYO: 2015-10-18: Added database version under /dbuser/me
  *v0.3: A.ADEBAYO: 2015-10-18: Reorganized into modular folder structure
+ *v0.4: A.ADEBAYO: 2015-10-18: String manipulation routes as default (no prefix)
  ******************************************************************************/
 import dotenv from "dotenv";
 import express from "express";
@@ -21,15 +22,15 @@ app.use(express.json());
 
 const port = process.env.PORT || 3000;
 
-// String manipulation routes
-app.use("/api", stringRouter);
-
-// User & Cat Fact routes
-app.use("/", hardcodedUserRouter);
+// User & Cat Fact routes (with specific prefixes to avoid conflicts)
+app.use("/user", hardcodedUserRouter);
 app.use("/dbuser", randomdbUserRouter);
 
 //Service Users (For CRUD operation on the Users table)
 app.use("/service", serviceUsersRouter);
+
+// String manipulation routes (DEFAULT - no prefix, must come last)
+app.use("/", stringRouter);
 
 // Export the app for use in other files
 export default app;
