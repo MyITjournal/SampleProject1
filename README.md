@@ -10,24 +10,23 @@ This is a RESTful API to analyze and store string properties
 
 - Create/analyze string
 - Retrieve a specific string
-- Retrieve all strings with filtering
-- Filter by natural language queries
+- Retrieve strings with filtering
+- Filter strings by natural language queries
 - Delete string
 
 ## Tech Stack
 
 1. Language - NodeJs (ESM)
 2. Framework - Express
-3. Database - MySQL/PostgreSQL
+3. Database - PostgreSQL
 
 ## Dependencies installed
 
 - express - This is the web server framework
-- mysql2 - This version works better (than mysql) with recent versions of MYSQL
+- pg (postgres) - To implement the database
 - dotenv - To ensure the security of the credentials.
 - axios - To handle fetching data from a third party API
 - nodemon - To ensure that the server starts automatically
-- pg - To implement the database
 
 ## Git repository
 
@@ -73,16 +72,16 @@ https://github.com/MyITjournal/SampleProject1.git
 
 ## API Endpoints
 
-| Method  | Endpoint                                | Description          |
-| ------- | --------------------------------------- | -------------------- |
-| /POST   | api/strings                             | Get a user’s profile |
-| /GET    | api/strings/:string_value               | Get a user’s profile |
-| /GET    | api/strings?                            | Get a user’s profile |
-| /GET    | api/strings/filter-by-natural-language? | Get a user’s profile |
-| /DELETE | api/strings:string_value                | Get a user’s profile |
+| Method  | Endpoint                                | Description                               |
+| ------- | --------------------------------------- | ----------------------------------------- |
+| /POST   | api/strings                             | Create a string                           |
+| /GET    | api/strings/:string_value               | Retrieve a specific string                |
+| /GET    | api/strings?                            | Retrieve strings with filtering           |
+| /GET    | api/strings/filter-by-natural-language? | Filter string by natural language queries |
+| /DELETE | api/strings:string_value                | Delete string                             |
 
-Production URL:
-http://localhost:3000/
+Production base URL:
+https://hngproject-test-10dce48be443.herokuapp.com/
 
 ## Folder Structure
 
