@@ -62,7 +62,7 @@ router.post("/add-user", async (req, res) => {
   ) {
     return res.status(400).json({
       status: "error",
-      message: "Firstname, lastname, and email are required",
+      message: "Firstname, lastname, email and dateOfBirth are required",
     });
   }
 
@@ -105,30 +105,61 @@ router.post("/add-user", async (req, res) => {
 
 // Update user by email
 router.put("/update-user/:email", async (req, res) => {
-  if (!req.body || !req.body.firstname || !req.body.lastname) {
+  const { email } = req.params;
+  const { firstname, middlename, lastname, dateOfBirth } = req.body;
+
+  // Check if at least one field is provided for update
+  if (!firstname && !middlename && !lastname && !dateOfBirth) {
     return res.status(400).json({
       status: "error",
-      message: "Firstname and lastname are required",
+      message:
+        "At least one field (firstname, middlename, lastname, dateOfBirth) must be provided for update",
     });
   }
 
-  const { firstname, middlename, lastname, dateOfBirth } = req.body;
-  const { email } = req.params;
-
   try {
+    // Build dynamic UPDATE query based on provided fields
+    const updates = [];
+    const values = [];
+    let paramCount = 1;
+
+    if (firstname !== undefined) {
+      updates.push(`firstname = $${paramCount}`);
+      values.push(firstname);
+      paramCount++;
+    }
+
+    if (middlename !== undefined) {
+      updates.push(`middlename = $${paramCount}`);
+      values.push(middlename);
+      paramCount++;
+    }
+
+    if (lastname !== undefined) {
+      updates.push(`lastname = $${paramCount}`);
+      values.push(lastname);
+      paramCount++;
+    }
+
+    if (dateOfBirth !== undefined) {
+      updates.push(`"dateOfBirth" = $${paramCount}`);
+      values.push(dateOfBirth);
+      paramCount++;
+    }
+
+    // Always update lastUpdated timestamp
+    updates.push(`"lastUpdated" = CURRENT_TIMESTAMP`);
+
+    // Add email as the final parameter for WHERE clause
+    values.push(email);
+
     const query = `
       UPDATE users 
-      SET firstname = $1, middlename = $2, lastname = $3, "dateOfBirth" = $4, "lastUpdated" = CURRENT_TIMESTAMP
-      WHERE email = $5
+      SET ${updates.join(", ")}
+      WHERE email = $${paramCount}
       RETURNING _id, firstname, middlename, lastname, email, "dateOfBirth", "lastUpdated"
     `;
-    const values = [
-      firstname,
-      middlename || null,
-      lastname,
-      dateOfBirth,
-      email,
-    ];
+
     const result = await pool.query(query, values);
 
     if (result.rows.length === 0) {
