@@ -60,7 +60,7 @@ router.get("/users", async (req, res) => {
   }
 });
 
-// Route to add user
+// Route to add user using stored procedure
 router.post("/add-user", async (req, res) => {
   if (
     !req.body ||
@@ -76,19 +76,10 @@ router.post("/add-user", async (req, res) => {
 
   const { firstname, middlename, lastname, email, dateOfBirth } = req.body;
   try {
-    const query = `
-      INSERT INTO users (firstname, middlename, lastname, email, "dateOfBirth")
-      VALUES ($1, $2, $3, $4, $5)
-      RETURNING _id, firstname, middlename, lastname, email, "dateOfBirth", created
-    `;
-    const values = [
-      firstname,
-      middlename || null,
-      lastname,
-      email,
-      dateOfBirth,
-    ];
-    const result = await pool.query(query, values);
+    const result = await pool.query(
+      "SELECT * FROM insert_user($1, $2, $3, $4, $5)",
+      [firstname, middlename || null, lastname, email, dateOfBirth]
+    );
 
     res.status(201).json({
       status: "success",
@@ -111,13 +102,18 @@ router.post("/add-user", async (req, res) => {
   }
 });
 
-// Update user by email
+// Update user by email using stored procedure
 router.put("/update-user/:email", async (req, res) => {
   const { email } = req.params;
   const { firstname, middlename, lastname, dateOfBirth } = req.body;
 
   // Check if at least one field is provided for update
-  if (!firstname && !middlename && !lastname && !dateOfBirth) {
+  if (
+    firstname === undefined &&
+    middlename === undefined &&
+    lastname === undefined &&
+    dateOfBirth === undefined
+  ) {
     return res.status(400).json({
       status: "error",
       message:
@@ -126,56 +122,16 @@ router.put("/update-user/:email", async (req, res) => {
   }
 
   try {
-    // Build dynamic UPDATE query based on provided fields
-    const updates = [];
-    const values = [];
-    let paramCount = 1;
-
-    if (firstname !== undefined) {
-      updates.push(`firstname = $${paramCount}`);
-      values.push(firstname);
-      paramCount++;
-    }
-
-    if (middlename !== undefined) {
-      updates.push(`middlename = $${paramCount}`);
-      values.push(middlename);
-      paramCount++;
-    }
-
-    if (lastname !== undefined) {
-      updates.push(`lastname = $${paramCount}`);
-      values.push(lastname);
-      paramCount++;
-    }
-
-    if (dateOfBirth !== undefined) {
-      updates.push(`"dateOfBirth" = $${paramCount}`);
-      values.push(dateOfBirth);
-      paramCount++;
-    }
-
-    // Always update lastUpdated timestamp
-    updates.push(`"lastUpdated" = CURRENT_TIMESTAMP`);
-
-    // Add email as the final parameter for WHERE clause
-    values.push(email);
-
-    const query = `
-      UPDATE users 
-      SET ${updates.join(", ")}
-      WHERE email = $${paramCount}
-      RETURNING _id, firstname, middlename, lastname, email, "dateOfBirth", "lastUpdated"
-    `;
-
-    const result = await pool.query(query, values);
-
-    if (result.rows.length === 0) {
-      return res.status(404).json({
-        status: "error",
-        message: "User not found",
-      });
-    }
+    const result = await pool.query(
+      "SELECT * FROM update_user_dynamic($1, $2, $3, $4, $5)",
+      [
+        email,
+        firstname || null,
+        middlename || null,
+        lastname || null,
+        dateOfBirth || null,
+      ]
+    );
 
     res.json({
       status: "success",
@@ -184,6 +140,18 @@ router.put("/update-user/:email", async (req, res) => {
     });
   } catch (err) {
     console.error("Error updating user:", err);
+    if (err.message.includes("not found")) {
+      return res.status(404).json({
+        status: "error",
+        message: "User not found",
+      });
+    }
+    if (err.message.includes("At least one field")) {
+      return res.status(400).json({
+        status: "error",
+        message: "At least one field must be provided for update",
+      });
+    }
     return res.status(500).json({
       status: "error",
       message: err.message,
@@ -191,22 +159,14 @@ router.put("/update-user/:email", async (req, res) => {
   }
 });
 
-// Delete User by email
+// Delete User by email using stored procedure
 router.delete("/delete-user/:email", async (req, res) => {
   const { email } = req.params;
 
   try {
-    const result = await pool.query(
-      "DELETE FROM users WHERE email = $1 RETURNING _id, email, firstname, lastname",
-      [email]
-    );
-
-    if (result.rows.length === 0) {
-      return res.status(404).json({
-        status: "error",
-        message: "User not found",
-      });
-    }
+    const result = await pool.query("SELECT * FROM delete_user_by_email($1)", [
+      email,
+    ]);
 
     res.json({
       status: "success",
@@ -215,6 +175,12 @@ router.delete("/delete-user/:email", async (req, res) => {
     });
   } catch (err) {
     console.error("Error deleting user:", err);
+    if (err.message.includes("not found")) {
+      return res.status(404).json({
+        status: "error",
+        message: "User not found",
+      });
+    }
     return res.status(500).json({
       status: "error",
       message: err.message,

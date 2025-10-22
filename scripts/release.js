@@ -38,6 +38,12 @@ async function runMigrations() {
     await pool.query(usersSchema);
     console.log("✅ Users table schema applied");
 
+    // Run stored procedures
+    const proceduresPath = path.join(__dirname, "../userDB/procedures.sql");
+    const procedures = fs.readFileSync(proceduresPath, "utf8");
+    await pool.query(procedures);
+    console.log("✅ Stored procedures applied");
+
     console.log("✅ All migrations completed successfully");
   } catch (error) {
     console.error("❌ Migration failed:", error.message);
