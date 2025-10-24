@@ -11,6 +11,7 @@ import serviceUsersRouter from "./userDB/serviceUsers.js";
 import randomdbUserRouter from "./userCatFact/randomDBUser.js";
 import hardcodedUserRouter from "./userCatFact/hardcodedUser.js";
 import stringRouter from "./stringManipulation/stringRoutes.js";
+import currencyExchangeRouter from "./currencyExchange/countryRoutes.js";
 
 //load the environment variables
 dotenv.config();
@@ -30,7 +31,10 @@ app.use("/dbuser", randomdbUserRouter);
 app.use("/service", serviceUsersRouter);
 
 // String manipulation routes (DEFAULT - no prefix, must come last)
-app.use("/", stringRouter);
+app.use("/strex", stringRouter);
+
+// Currency Exchange routes (at root level)
+app.use("/", currencyExchangeRouter);
 
 // Export the app for use in other files
 export default app;

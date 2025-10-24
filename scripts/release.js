@@ -44,6 +44,15 @@ async function runMigrations() {
     await pool.query(procedures);
     console.log("✅ Stored procedures applied");
 
+    // Run currency exchange schema
+    const currencySchemaPath = path.join(
+      __dirname,
+      "../currencyExchange/schema.sql"
+    );
+    const currencySchema = fs.readFileSync(currencySchemaPath, "utf8");
+    await pool.query(currencySchema);
+    console.log("✅ Currency exchange schema applied");
+
     console.log("✅ All migrations completed successfully");
   } catch (error) {
     console.error("❌ Migration failed:", error.message);
