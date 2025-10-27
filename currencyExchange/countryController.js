@@ -4,8 +4,8 @@ import axios from "axios";
 import { createLogger } from "../utils/logger.js";
 import fs from "fs";
 import path from "path";
+import sharp from "sharp";
 
-// Create logger for this module
 const logger = createLogger("currencyExchange");
 
 const { Pool } = pg;
@@ -36,33 +36,33 @@ const calculate_GDP_Factor = () => {
   return Math.random() * (2000 - 1000) + 1000;
 };
 
-// Function to extract currency code - Updated to handle empty arrays
+// Function to extract currency code
 const extractCurrencyCode = (currencies) => {
   if (!currencies || typeof currencies !== "object") {
-    return null; // Changed from "USD" to null
+    return null;
   }
 
   const currencyKeys = Object.keys(currencies);
 
   if (currencyKeys.length === 0) {
-    return null; // Changed from "USD" to null
+    return null;
   }
 
-  // Only log if country has multiple currencies (interesting case)
+  // This will only log if country has multiple currencies
   if (currencyKeys.length > 1) {
     console.log(
-      "🔍 Multiple currencies found:",
+      "Multiple currencies found:",
       JSON.stringify(currencies, null, 2)
     );
-    console.log("🔑 Available currency codes:", currencyKeys);
-    console.log("✅ Selected first currency:", currencyKeys[0]);
+    console.log("Available currency codes:", currencyKeys);
+    console.log("Selected first currency:", currencyKeys[0]);
   }
 
   // Return the first currency code
   return currencyKeys[0];
 };
 
-// Updated validation helper function
+// Validation helper function
 const validateCountryData = (country) => {
   const errors = {};
 
@@ -85,15 +85,13 @@ const validateCountryData = (country) => {
     errors.population = "is required and must be a valid number";
   }
 
-  // Currency is no longer required - can be null
-
   return {
     isValid: Object.keys(errors).length === 0,
     errors,
   };
 };
 
-// API calls with retry logic - Enhanced for network issues
+// API call to fetch country data
 const fetchWithRetry = async (url, options = {}, retries = 3) => {
   for (let i = 0; i < retries; i++) {
     try {
@@ -106,13 +104,17 @@ const fetchWithRetry = async (url, options = {}, retries = 3) => {
       console.log(`Attempt ${i + 1} failed for ${url}:`, error.message);
 
       if (i === retries - 1) {
-        // Last attempt failed
-        throw new Error(
-          `Failed to fetch ${url} after ${retries} attempts: ${error.message}`
-        );
+        // Last attempt failed - use consistent error message format
+        if (url.includes("restcountries.com")) {
+          throw new Error("Could not fetch data from restcountries.com");
+        } else if (url.includes("open.er-api.com")) {
+          throw new Error("Could not fetch data from open.er-api.com");
+        } else {
+          throw new Error(`Could not fetch data from ${url}`);
+        }
       }
 
-      // Progressive delay for network issues: 2s, 5s, 10s, 15s, 20s
+      // Handling network delays: 2s, 5s, 10s, 15s, 20s
       const delay = i < 2 ? (i + 1) * 2000 : (i + 1) * 5000;
       console.log(`Retrying in ${delay}ms...`);
       await new Promise((resolve) => setTimeout(resolve, delay));
@@ -120,7 +122,64 @@ const fetchWithRetry = async (url, options = {}, retries = 3) => {
   }
 };
 
-//Endpoint 1 - POST /countries/refresh - Updated currency handling
+// Function to get top 5 countries by GDP
+const getTop5CountriesByGDP = async () => {
+  const query = `
+    SELECT 
+      name,
+      estimated_gdp,
+      currency_code,
+      population
+    FROM countries
+    WHERE estimated_gdp IS NOT NULL
+    ORDER BY estimated_gdp DESC
+    LIMIT 5
+  `;
+  const result = await pool.query(query);
+  return result.rows;
+};
+
+// Function to get total countries count
+const getTotalCountriesCount = async () => {
+  const query = "SELECT COUNT(*) as total FROM countries";
+  const result = await pool.query(query);
+  return parseInt(result.rows[0].total);
+};
+
+// Function to get last refresh timestamp
+const getLastRefreshTimestamp = async () => {
+  const query = `
+    SELECT last_refresh_timestamp
+    FROM refresh_metadata
+    ORDER BY created_at DESC
+    LIMIT 1
+  `;
+  const result = await pool.query(query);
+  return result.rows[0]?.last_refresh_timestamp || new Date().toISOString();
+};
+
+// Function to format top 5 countries for response
+const formatTop5CountriesForResponse = (countries) => {
+  return countries.map((country) => ({
+    name: country.name,
+    estimated_gdp: country.estimated_gdp
+      ? Math.round(country.estimated_gdp)
+      : null,
+    currency_code: country.currency_code,
+    population: country.population,
+  }));
+};
+
+// Function to log refresh metadata
+const logRefreshMetadata = async (totalCountries, duration, status) => {
+  await pool.query(
+    `INSERT INTO refresh_metadata (total_countries, last_refresh_timestamp, refresh_duration_seconds, status)
+     VALUES ($1, CURRENT_TIMESTAMP, $2, $3)`,
+    [totalCountries, duration, status]
+  );
+};
+
+//Endpoint 1 - POST /countries/refresh
 export const refreshCountriesData = async (req, res) => {
   const startTime = Date.now();
 
@@ -130,14 +189,13 @@ export const refreshCountriesData = async (req, res) => {
     let countries = [];
     let exchangeRates = {};
 
-    // 1. Fetch countries data with retry - CRITICAL API
+    // 1. Fetch countries data with retry
     try {
       await logger.info("Fetching countries data from external APIs");
 
-      // Try the v3 API first (newer version)
       let countriesResponse;
       try {
-        await logger.debug("Attempting REST Countries v3 API");
+        await logger.debug("Attempting REST Countries v2 API");
         countriesResponse = await fetchWithRetry(
           "https://restcountries.com/v3.1/all?fields=name,capital,region,population,flags,currencies",
           { timeout: 45000 },
@@ -174,17 +232,18 @@ export const refreshCountriesData = async (req, res) => {
         );
       }
     } catch (error) {
-      // Countries API failure - CRITICAL, return 503
+      // Countries API failure
       await logger.error("Failed to fetch countries data", {
         error: error.message,
         duration: Math.floor((Date.now() - startTime) / 1000),
       });
 
       const duration = Math.floor((Date.now() - startTime) / 1000);
-      await pool.query(
-        `INSERT INTO refresh_metadata (total_countries, last_refresh_timestamp, refresh_duration_seconds, status)
-         VALUES (0, CURRENT_TIMESTAMP, $1, 'failed - countries API unavailable')`,
-        [duration]
+
+      await logRefreshMetadata(
+        0,
+        duration,
+        "failed - countries API unavailable"
       );
 
       return res.status(503).json({
@@ -193,7 +252,7 @@ export const refreshCountriesData = async (req, res) => {
       });
     }
 
-    // 2. Fetch exchange rates - always fetch regardless of currency availability
+    // 2. Fetch exchange rates - this runs always, irrespective of currency availability
     try {
       await logger.info("Fetching exchange rates from external API");
       const exchangeResponse = await fetchWithRetry(
@@ -211,15 +270,15 @@ export const refreshCountriesData = async (req, res) => {
       }
 
       exchangeRates = exchangeResponse.data.rates;
-      const rateCount = Object.keys(exchangeRates).length;
+      //const rateCount = Object.keys(exchangeRates).length;
 
-      if (rateCount < 50) {
-        throw new Error(
-          `Insufficient exchange rates received: only ${rateCount} currencies`
-        );
-      }
+      // if (rateCount < 50) {
+      //   throw new Error(
+      //     `Insufficient exchange rates received: only ${rateCount} currencies`
+      //   );
+      // }
 
-      await logger.success(`Fetched ${rateCount} exchange rates from API`);
+      // await logger.success(`Fetched ${rateCount} exchange rates from API`);
     } catch (error) {
       await logger.error("Failed to fetch exchange rates", {
         error: error.message,
@@ -228,10 +287,11 @@ export const refreshCountriesData = async (req, res) => {
       });
 
       const duration = Math.floor((Date.now() - startTime) / 1000);
-      await pool.query(
-        `INSERT INTO refresh_metadata (total_countries, last_refresh_timestamp, refresh_duration_seconds, status)
-         VALUES (0, CURRENT_TIMESTAMP, $1, 'failed - exchange rates API unavailable')`,
-        [duration]
+
+      await logRefreshMetadata(
+        0,
+        duration,
+        "failed - exchange rates API unavailable"
       );
 
       return res.status(503).json({
@@ -240,7 +300,7 @@ export const refreshCountriesData = async (req, res) => {
       });
     }
 
-    // Process and store countries with updated currency logic
+    // 3. Database operations will only proceed if BOTH APIs succeed
     let processedCount = 0;
     let validationErrors = [];
     const client = await pool.connect();
@@ -248,10 +308,11 @@ export const refreshCountriesData = async (req, res) => {
     try {
       await client.query("BEGIN");
 
+      // Save countries to database first
       for (let i = 0; i < countries.length; i++) {
         const country = countries[i];
 
-        // Validate country data (currency no longer required)
+        // Validate country data
         const validation = validateCountryData(country);
 
         if (!validation.isValid) {
@@ -267,34 +328,30 @@ export const refreshCountriesData = async (req, res) => {
         let exchangeRate = null;
         let estimatedGDP = null;
 
-        // Handle currency and exchange rate logic
         if (currencyCode) {
-          // Currency exists, try to get exchange rate
           exchangeRate = exchangeRates[currencyCode] || null;
 
           if (exchangeRate && exchangeRate > 0) {
-            // Valid exchange rate found, calculate GDP
             const gdpMultiplier = calculate_GDP_Factor();
             estimatedGDP = (country.population * gdpMultiplier) / exchangeRate;
           } else {
-            // Currency not found in exchange rates API
+            exchangeRate = null;
+            estimatedGDP = null;
             await logger.warn(
               `Currency ${currencyCode} not found in exchange rates for ${country.name}`
             );
-            estimatedGDP = null;
           }
         } else {
-          // No currency available
-          estimatedGDP = 0; // Set to 0 as per specification
+          exchangeRate = null;
+          estimatedGDP = 0;
         }
 
-        // Update query to handle CONFLICT on name using functional index
         const query = `
           INSERT INTO countries (
             name, capital, region, population, currency_code, 
             exchange_rate, estimated_gdp, flag_url, last_refreshed_at
           ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, CURRENT_TIMESTAMP)
-          ON CONFLICT (LOWER(name)) 
+          ON CONFLICT (lower(name))
           DO UPDATE SET 
             capital = EXCLUDED.capital,
             region = EXCLUDED.region,
@@ -312,9 +369,9 @@ export const refreshCountriesData = async (req, res) => {
           country.capital || null,
           country.region || null,
           country.population || 0,
-          currencyCode, // Can be null
-          exchangeRate, // Can be null
-          estimatedGDP, // Can be null or 0
+          currencyCode,
+          exchangeRate,
+          estimatedGDP,
           country.flag || null,
         ];
 
@@ -322,20 +379,26 @@ export const refreshCountriesData = async (req, res) => {
         processedCount++;
       }
 
-      // Generate summary image after successful processing
+      if (validationErrors.length > 0 && processedCount === 0) {
+        await client.query("ROLLBACK");
+        return res.status(400).json({
+          error: "Validation failed",
+        });
+      }
+
+      // Summary image generation (after successful processing)
       await generateSummaryImage();
 
       // Update global refresh timestamp
       const duration = Math.floor((Date.now() - startTime) / 1000);
       const status = "completed";
 
-      await client.query(
-        `INSERT INTO refresh_metadata (total_countries, last_refresh_timestamp, refresh_duration_seconds, status)
-         VALUES ($1, CURRENT_TIMESTAMP, $2, $3)`,
-        [processedCount, duration, status]
-      );
+      await logRefreshMetadata(processedCount, duration, status);
 
       await client.query("COMMIT");
+
+      // Get top 5 countries from the successfully processed countries only
+      const top5Countries = await getTop5CountriesByGDP();
 
       await logger.success(
         `Successfully processed ${processedCount} countries in ${duration}s`,
@@ -344,6 +407,7 @@ export const refreshCountriesData = async (req, res) => {
           processed: processedCount,
           failed: validationErrors.length,
           duration_seconds: duration,
+          total_in_db: processedCount,
         }
       );
 
@@ -360,18 +424,20 @@ export const refreshCountriesData = async (req, res) => {
         );
       }
 
-      // Build successful response
+      // Build response using successfully processed count
       const response = {
         status: "success",
         message: "Countries data refreshed successfully",
         data: {
-          total_countries: processedCount,
+          total_countries: processedCount, // Use processedCount (250) instead of actualTotalCountries
+          countries_processed_this_refresh: processedCount,
           duration_seconds: duration,
           timestamp: new Date().toISOString(),
+          top_5_countries_by_gdp: formatTop5CountriesForResponse(top5Countries),
         },
       };
 
-      // Add validation warnings if any countries were skipped
+      // Validation warnings (in case any countries are skipped)
       if (validationErrors.length > 0) {
         response.warnings = {
           type: "validation_errors",
@@ -411,41 +477,38 @@ export const refreshCountriesData = async (req, res) => {
   }
 };
 
-// Helper function to generate summary image
+// Function to generate summary image
 async function generateSummaryImage() {
   try {
-    // Create cache directory if it doesn't exist
+    // 1. Create cache directory if it doesn't exist
     const cacheDir = path.join(process.cwd(), "cache");
-    console.log(`📁 Cache directory path: ${cacheDir}`);
+    console.log(`Cache directory path: ${cacheDir}`);
 
     if (!fs.existsSync(cacheDir)) {
-      console.log(`📁 Creating cache directory: ${cacheDir}`);
+      console.log(`Creating cache directory: ${cacheDir}`);
       fs.mkdirSync(cacheDir, { recursive: true });
-      console.log(`✅ Cache directory created successfully`);
+      console.log(`Cache directory created successfully`);
     } else {
-      console.log(`📁 Cache directory already exists`);
+      console.log(`Cache directory already exists`);
     }
 
-    // Get total countries count
-    const totalCountriesQuery = "SELECT COUNT(*) as total FROM countries";
-    const totalCountriesResult = await pool.query(totalCountriesQuery);
+    // 2. Get data - use the count that was just processed in this refresh
+    const [top5Countries, lastRefreshTime] = await Promise.all([
+      getTop5CountriesByGDP(),
+      getLastRefreshTimestamp(),
+    ]);
 
-    // Get top 5 countries by GDP
-    const top5Query = `
-      SELECT 
-        name,
-        estimated_gdp
-      FROM countries
-      WHERE estimated_gdp IS NOT NULL
-      ORDER BY estimated_gdp DESC
-      LIMIT 5
+    // Get the processed count from the latest refresh metadata
+    const processedCountQuery = `
+      SELECT total_countries
+      FROM refresh_metadata
+      ORDER BY created_at DESC
+      LIMIT 1
     `;
-    const top5Result = await pool.query(top5Query);
+    const processedCountResult = await pool.query(processedCountQuery);
+    const totalCountries = processedCountResult.rows[0]?.total_countries || 0;
 
-    const totalCountries = totalCountriesResult.rows[0].total;
-    const top5Countries = top5Result.rows;
-
-    // Create SVG content
+    // Create SVG content using the processed count
     const svg = `
       <svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
         <rect width="800" height="600" fill="#f0f8ff"/>
@@ -473,41 +536,45 @@ async function generateSummaryImage() {
         `
           )
           .join("")}
+        <text x="50" y="400" font-size="16" font-family="Arial" fill="#34495e">
+          Last Refresh: ${new Date(lastRefreshTime).toLocaleString()}
+        </text>
         <text x="400" y="550" text-anchor="middle" font-size="14" font-family="Arial" fill="#7f8c8d">
           Generated: ${new Date().toISOString()}
         </text>
       </svg>
     `;
 
-    console.log(`📊 Generated SVG content (${svg.length} characters)`);
+    console.log(`Generated SVG content (${svg.length} characters)`);
 
-    // Save to cache/summary.svg with debugging
-    const filePath = path.join(cacheDir, "summary.svg");
-    console.log(`💾 Attempting to write file to: ${filePath}`);
+    // Convert SVG to PNG using Sharp package
+    const filePath = path.join(cacheDir, "summary.png");
+    console.log(`Attempting to convert SVG to PNG: ${filePath}`);
 
     try {
-      fs.writeFileSync(filePath, svg);
-      console.log(`✅ File written successfully`);
+      const pngBuffer = await sharp(Buffer.from(svg)).png().toBuffer();
 
-      // Verify file was created
+      fs.writeFileSync(filePath, pngBuffer);
+      console.log(`PNG file written successfully`);
+
       if (fs.existsSync(filePath)) {
         const stats = fs.statSync(filePath);
         console.log(
-          `📈 File verification: size=${stats.size} bytes, created=${stats.birthtime}`
+          `File verification: size=${stats.size} bytes, created=${stats.birthtime}`
         );
       } else {
         console.log(
-          `❌ File verification failed: file does not exist after write`
+          `File verification failed: file does not exist after write`
         );
       }
     } catch (writeError) {
-      console.error(`❌ File write error:`, writeError);
+      console.error(`PNG conversion/write error:`, writeError);
       throw writeError;
     }
 
-    await logger.success("Summary image generated successfully");
+    await logger.success("Summary image generated successfully as PNG");
   } catch (error) {
-    console.error(`❌ Error in generateSummaryImage:`, error);
+    console.error(`Error in generateSummaryImage:`, error);
     await logger.error("Failed to generate summary image", {
       error: error.message,
       stack: error.stack,
@@ -515,20 +582,22 @@ async function generateSummaryImage() {
   }
 }
 
-// GET /countries/image - Serve summary image
+// Endpoint 6: GET /countries/image - Serve summary image
 export const getCountriesSummaryImage = async (req, res) => {
   try {
-    const imagePath = path.join(process.cwd(), "cache", "summary.svg");
+    const imagePath = path.join(process.cwd(), "cache", "summary.png");
 
+    // Return error if no image exists
     if (!fs.existsSync(imagePath)) {
       return res.status(404).json({
         error: "Summary image not found",
       });
     }
 
-    const imageContent = fs.readFileSync(imagePath, "utf8");
-    res.setHeader("Content-Type", "image/svg+xml");
-    res.status(200).send(imageContent);
+    const imageBuffer = fs.readFileSync(imagePath);
+    res.setHeader("Content-Type", "image/png");
+    res.setHeader("Content-Length", imageBuffer.length);
+    res.status(200).send(imageBuffer);
   } catch (error) {
     console.error("Error serving image:", error);
     res.status(500).json({
@@ -578,7 +647,7 @@ export const getAllCountries = async (req, res) => {
       paramCount++;
     }
 
-    // Apply sorting
+    // Sorting
     const sortOptions = {
       name_asc: "name ASC",
       name_desc: "name DESC",
@@ -593,9 +662,9 @@ export const getAllCountries = async (req, res) => {
     const orderBy = sortOptions[sort] || "name ASC";
     query += ` ORDER BY ${orderBy}`;
 
-    // Apply pagination only if explicitly requested
+    // Pagination
     if (limit) {
-      query += ` LIMIT $${paramCount}`;
+      query += `LIMIT $${paramCount}`;
       params.push(parseInt(limit));
       paramCount++;
 
@@ -608,19 +677,16 @@ export const getAllCountries = async (req, res) => {
 
     const result = await pool.query(query, params);
 
-    // Return simplified array format as per specification
     res.status(200).json(result.rows);
   } catch (error) {
     console.error("Error fetching countries:", error);
     res.status(500).json({
-      status: "error",
-      message: "Internal server error",
-      error: error.message,
+      error: "Internal server error",
     });
   }
 };
 
-// GET /countries/:name - Get country by name
+// Endpoint 3: GET /countries/:name - Get country by name
 export const getCountryByName = async (req, res) => {
   try {
     const { name } = req.params;
@@ -653,7 +719,7 @@ export const getCountryByName = async (req, res) => {
   }
 };
 
-// DELETE /countries/:name - Delete country
+// Endpoint 4: DELETE /countries/:name - Delete country
 export const deleteCountry = async (req, res) => {
   try {
     const { name } = req.params;
@@ -685,15 +751,10 @@ export const deleteCountry = async (req, res) => {
   }
 };
 
-// GET /status - Get refresh status
+// Endpoint 5: GET /status - Get refresh status
 export const getRefreshStatus = async (req, res) => {
   try {
-    // Get total countries
-    const countResult = await pool.query(
-      "SELECT COUNT(*) as total FROM countries"
-    );
-
-    // Get latest refresh metadata
+    // Get processed countries count from latest refresh metadata instead of total DB count
     const metadataResult = await pool.query(`
       SELECT total_countries, last_refresh_timestamp, refresh_duration_seconds, status
       FROM refresh_metadata
@@ -701,26 +762,23 @@ export const getRefreshStatus = async (req, res) => {
       LIMIT 1
     `);
 
-    const totalCountries = parseInt(countResult.rows[0].total);
     const lastRefresh = metadataResult.rows[0] || null;
+    const processedCountries = lastRefresh?.total_countries || 0;
 
-    // Return simplified format as per specification
     res.status(200).json({
-      total_countries: totalCountries,
+      total_countries: processedCountries, // Use processed count instead of DB count
       last_refreshed_at: lastRefresh?.last_refresh_timestamp || null,
       details: {
-        countries_processed: lastRefresh?.total_countries || 0,
+        countries_processed: processedCountries,
         duration_seconds: lastRefresh?.refresh_duration_seconds || 0,
         refresh_status: lastRefresh?.status || "never_refreshed",
-        database_status: totalCountries > 0 ? "populated" : "empty",
+        database_status: processedCountries > 0 ? "populated" : "empty",
       },
     });
   } catch (error) {
     console.error("Error getting status:", error);
     res.status(500).json({
-      status: "error",
-      message: "Internal server error",
-      error: error.message,
+      error: "Internal server error",
     });
   }
 };

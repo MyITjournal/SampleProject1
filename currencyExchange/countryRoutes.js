@@ -10,8 +10,6 @@ import {
 
 const router = express.Router();
 
-// IMPORTANT: Specific routes MUST come before parameterized routes
-
 // 5. GET /status - Refresh status (specific route)
 router.get("/status", getRefreshStatus);
 
@@ -24,7 +22,6 @@ router.post("/countries/refresh", refreshCountriesData);
 // 2. GET /countries - Get all countries with filters (specific route)
 router.get("/countries", getAllCountries);
 
-// Parameterized routes MUST come last
 // 3. GET /countries/:name - Get country by name
 router.get("/countries/:name", getCountryByName);
 

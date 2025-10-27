@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS countries (
 );
 
 -- Create functional index for case-insensitive unique constraint on name
-CREATE UNIQUE INDEX idx_countries_name_unique ON countries (LOWER(name));
+CREATE UNIQUE INDEX IF NOT EXISTS idx_countries_name_unique ON countries (LOWER(name));
 
 -- Create indexes for better query performance  
 CREATE INDEX idx_countries_region ON countries(region);
