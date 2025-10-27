@@ -3,20 +3,23 @@ DROP TABLE IF EXISTS countries CASCADE;
 
 CREATE TABLE IF NOT EXISTS countries (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(255) UNIQUE NOT NULL,
+    name VARCHAR(255) NOT NULL,
     capital VARCHAR(255),
     region VARCHAR(100),
     population BIGINT NOT NULL,
-    currency_code VARCHAR(10) NOT NULL,
-    exchange_rate DECIMAL(15,6) NOT NULL,
-    estimated_gdp DECIMAL(20,2) NOT NULL,
+    currency_code VARCHAR(10), -- Allow NULL
+    exchange_rate DECIMAL(15,6), -- Allow NULL
+    estimated_gdp DECIMAL(20,2), -- Allow NULL
     flag_url TEXT,
     last_refreshed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Create indexes for better query performance
+-- Create functional index for case-insensitive unique constraint on name
+CREATE UNIQUE INDEX idx_countries_name_unique ON countries (LOWER(name));
+
+-- Create indexes for better query performance  
 CREATE INDEX idx_countries_region ON countries(region);
 CREATE INDEX idx_countries_currency ON countries(currency_code);
 CREATE INDEX idx_countries_name ON countries(name);

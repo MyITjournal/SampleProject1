@@ -1,0 +1,368 @@
+[2025-10-26T22:51:47.285Z] [INFO] [currencyExchange] Starting countries data refresh
+[2025-10-26T22:51:47.288Z] [INFO] [currencyExchange] Fetching countries data from external APIs
+[2025-10-26T22:51:47.289Z] [DEBUG] [currencyExchange] Attempting REST Countries v3 API
+[2025-10-26T22:51:48.949Z] [SUCCESS] [currencyExchange] Fetched 250 countries from v3 API
+[2025-10-26T22:51:48.951Z] [INFO] [currencyExchange] Fetching exchange rates from external API
+[2025-10-26T22:51:49.658Z] [SUCCESS] [currencyExchange] Fetched 165 exchange rates from API
+[2025-10-26T22:51:49.717Z] [DEBUG] [currencyExchange] Processing country: Nepal | Data: {
+  "currencies": {
+    "NPR": {
+      "name": "Nepalese rupee",
+      "symbol": "₨"
+    }
+  },
+  "index": 0
+}
+[2025-10-26T22:51:49.723Z] [DEBUG] [currencyExchange] Processing country: United Kingdom | Data: {
+  "currencies": {
+    "GBP": {
+      "name": "British pound",
+      "symbol": "£"
+    }
+  },
+  "index": 1
+}
+[2025-10-26T22:51:49.727Z] [DEBUG] [currencyExchange] Processing country: Qatar | Data: {
+  "currencies": {
+    "QAR": {
+      "name": "Qatari riyal",
+      "symbol": "ر.ق"
+    }
+  },
+  "index": 2
+}
+[2025-10-26T22:51:49.787Z] [DEBUG] [currencyExchange] Processing country: Panama | Data: {
+  "currencies": {
+    "PAB": {
+      "name": "Panamanian balboa",
+      "symbol": "B/."
+    },
+    "USD": {
+      "name": "United States dollar",
+      "symbol": "$"
+    }
+  },
+  "index": 37
+}
+[2025-10-26T22:51:49.791Z] [DEBUG] [currencyExchange] Processing country: Jersey | Data: {
+  "currencies": {
+    "GBP": {
+      "name": "British pound",
+      "symbol": "£"
+    },
+    "JEP": {
+      "name": "Jersey pound",
+      "symbol": "£"
+    }
+  },
+  "index": 38
+}
+[2025-10-26T22:51:49.813Z] [DEBUG] [currencyExchange] Processing country: Western Sahara | Data: {
+  "currencies": {
+    "DZD": {
+      "name": "Algerian dinar",
+      "symbol": "دج"
+    },
+    "MAD": {
+      "name": "Moroccan dirham",
+      "symbol": "DH"
+    },
+    "MRU": {
+      "name": "Mauritanian ouguiya",
+      "symbol": "UM"
+    }
+  },
+  "index": 50
+}
+[2025-10-26T22:51:49.851Z] [DEBUG] [currencyExchange] Processing country: Brunei | Data: {
+  "currencies": {
+    "BND": {
+      "name": "Brunei dollar",
+      "symbol": "$"
+    },
+    "SGD": {
+      "name": "Singapore dollar",
+      "symbol": "$"
+    }
+  },
+  "index": 77
+}
+[2025-10-26T22:51:49.860Z] [DEBUG] [currencyExchange] Processing country: Bahamas | Data: {
+  "currencies": {
+    "BSD": {
+      "name": "Bahamian dollar",
+      "symbol": "$"
+    },
+    "USD": {
+      "name": "United States dollar",
+      "symbol": "$"
+    }
+  },
+  "index": 82
+}
+[2025-10-26T22:51:49.902Z] [DEBUG] [currencyExchange] Processing country: Eswatini | Data: {
+  "currencies": {
+    "SZL": {
+      "name": "Swazi lilangeni",
+      "symbol": "L"
+    },
+    "ZAR": {
+      "name": "South African rand",
+      "symbol": "R"
+    }
+  },
+  "index": 117
+}
+[2025-10-26T22:51:49.907Z] [DEBUG] [currencyExchange] Processing country: Cuba | Data: {
+  "currencies": {
+    "CUC": {
+      "name": "Cuban convertible peso",
+      "symbol": "$"
+    },
+    "CUP": {
+      "name": "Cuban peso",
+      "symbol": "$"
+    }
+  },
+  "index": 119
+}
+[2025-10-26T22:51:49.910Z] [DEBUG] [currencyExchange] Processing country: Namibia | Data: {
+  "currencies": {
+    "NAD": {
+      "name": "Namibian dollar",
+      "symbol": "$"
+    },
+    "ZAR": {
+      "name": "South African rand",
+      "symbol": "R"
+    }
+  },
+  "index": 121
+}
+[2025-10-26T22:51:49.912Z] [DEBUG] [currencyExchange] Processing country: Faroe Islands | Data: {
+  "currencies": {
+    "DKK": {
+      "name": "Danish krone",
+      "symbol": "kr"
+    },
+    "FOK": {
+      "name": "Faroese króna",
+      "symbol": "kr"
+    }
+  },
+  "index": 122
+}
+[2025-10-26T22:51:49.949Z] [DEBUG] [currencyExchange] Processing country: Tuvalu | Data: {
+  "currencies": {
+    "AUD": {
+      "name": "Australian dollar",
+      "symbol": "$"
+    },
+    "TVD": {
+      "name": "Tuvaluan dollar",
+      "symbol": "$"
+    }
+  },
+  "index": 152
+}
+[2025-10-26T22:51:49.953Z] [DEBUG] [currencyExchange] Processing country: Cambodia | Data: {
+  "currencies": {
+    "KHR": {
+      "name": "Cambodian riel",
+      "symbol": "៛"
+    },
+    "USD": {
+      "name": "United States dollar",
+      "symbol": "$"
+    }
+  },
+  "index": 154
+}
+[2025-10-26T22:51:49.986Z] [DEBUG] [currencyExchange] Processing country: Cook Islands | Data: {
+  "currencies": {
+    "CKD": {
+      "name": "Cook Islands dollar",
+      "symbol": "$"
+    },
+    "NZD": {
+      "name": "New Zealand dollar",
+      "symbol": "$"
+    }
+  },
+  "index": 182
+}
+[2025-10-26T22:51:49.995Z] [DEBUG] [currencyExchange] Processing country: Isle of Man | Data: {
+  "currencies": {
+    "GBP": {
+      "name": "British pound",
+      "symbol": "£"
+    },
+    "IMP": {
+      "name": "Manx pound",
+      "symbol": "£"
+    }
+  },
+  "index": 188
+}
+[2025-10-26T22:51:50.000Z] [DEBUG] [currencyExchange] Processing country: Guernsey | Data: {
+  "currencies": {
+    "GBP": {
+      "name": "British pound",
+      "symbol": "£"
+    },
+    "GGP": {
+      "name": "Guernsey pound",
+      "symbol": "£"
+    }
+  },
+  "index": 192
+}
+[2025-10-26T22:51:50.049Z] [DEBUG] [currencyExchange] Processing country: Bhutan | Data: {
+  "currencies": {
+    "BTN": {
+      "name": "Bhutanese ngultrum",
+      "symbol": "Nu."
+    },
+    "INR": {
+      "name": "Indian rupee",
+      "symbol": "₹"
+    }
+  },
+  "index": 231
+}
+[2025-10-26T22:51:50.052Z] [DEBUG] [currencyExchange] Processing country: Saint Helena, Ascension and Tristan da Cunha | Data: {
+  "currencies": {
+    "GBP": {
+      "name": "Pound sterling",
+      "symbol": "£"
+    },
+    "SHP": {
+      "name": "Saint Helena pound",
+      "symbol": "£"
+    }
+  },
+  "index": 232
+}
+[2025-10-26T22:51:50.063Z] [DEBUG] [currencyExchange] Processing country: Lesotho | Data: {
+  "currencies": {
+    "LSL": {
+      "name": "Lesotho loti",
+      "symbol": "L"
+    },
+    "ZAR": {
+      "name": "South African rand",
+      "symbol": "R"
+    }
+  },
+  "index": 239
+}
+[2025-10-26T22:51:50.066Z] [DEBUG] [currencyExchange] Processing country: Kiribati | Data: {
+  "currencies": {
+    "AUD": {
+      "name": "Australian dollar",
+      "symbol": "$"
+    },
+    "KID": {
+      "name": "Kiribati dollar",
+      "symbol": "$"
+    }
+  },
+  "index": 240
+}
+[2025-10-26T22:51:50.077Z] [DEBUG] [currencyExchange] Processing country: Palestine | Data: {
+  "currencies": {
+    "EGP": {
+      "name": "Egyptian pound",
+      "symbol": "E£"
+    },
+    "ILS": {
+      "name": "Israeli new shekel",
+      "symbol": "₪"
+    },
+    "JOD": {
+      "name": "Jordanian dinar",
+      "symbol": "JD"
+    }
+  },
+  "index": 246
+}
+[2025-10-26T22:51:50.095Z] [SUCCESS] [currencyExchange] Successfully processed 244 countries in 2s | Data: {
+  "total_fetched": 250,
+  "processed": 244,
+  "failed": 6,
+  "duration_seconds": 2
+}
+[2025-10-26T22:51:50.096Z] [WARN] [currencyExchange] 6 countries failed validation | Data: {
+  "failed_countries": [
+    {
+      "name": "Heard Island and McDonald Islands",
+      "errors": {
+        "currency_code": "is required"
+      }
+    },
+    {
+      "name": "Cuba",
+      "errors": {
+        "exchange_rate": "No valid rate found for currency CUC"
+      }
+    },
+    {
+      "name": "North Korea",
+      "errors": {
+        "exchange_rate": "No valid rate found for currency KPW"
+      }
+    },
+    {
+      "name": "Cook Islands",
+      "errors": {
+        "exchange_rate": "No valid rate found for currency CKD"
+      }
+    },
+    {
+      "name": "Bouvet Island",
+      "errors": {
+        "currency_code": "is required"
+      }
+    },
+    {
+      "name": "Antarctica",
+      "errors": {
+        "currency_code": "is required"
+      }
+    }
+  ]
+}
+[2025-10-26T23:55:10.975Z] [INFO] [currencyExchange] Starting countries data refresh
+[2025-10-26T23:55:10.979Z] [INFO] [currencyExchange] Fetching countries data from external APIs
+[2025-10-26T23:55:10.981Z] [DEBUG] [currencyExchange] Attempting REST Countries v3 API
+[2025-10-26T23:55:12.624Z] [SUCCESS] [currencyExchange] Fetched 250 countries from v3 API
+[2025-10-26T23:55:12.626Z] [INFO] [currencyExchange] Fetching exchange rates from external API
+[2025-10-26T23:55:13.574Z] [SUCCESS] [currencyExchange] Fetched 165 exchange rates from API
+[2025-10-26T23:55:13.793Z] [WARN] [currencyExchange] Currency CUC not found in exchange rates for Cuba
+[2025-10-26T23:55:13.842Z] [WARN] [currencyExchange] Currency KPW not found in exchange rates for North Korea
+[2025-10-26T23:55:13.846Z] [WARN] [currencyExchange] Currency CKD not found in exchange rates for Cook Islands
+[2025-10-26T23:55:13.988Z] [ERROR] [currencyExchange] Failed to generate summary image | Data: {
+  "error": "column \"countries.name\" must appear in the GROUP BY clause or be used in an aggregate function"
+}
+[2025-10-26T23:55:13.993Z] [SUCCESS] [currencyExchange] Successfully processed 250 countries in 3s | Data: {
+  "total_fetched": 250,
+  "processed": 250,
+  "failed": 0,
+  "duration_seconds": 3
+}
+[2025-10-27T00:14:49.804Z] [INFO] [currencyExchange] Starting countries data refresh
+[2025-10-27T00:14:49.810Z] [INFO] [currencyExchange] Fetching countries data from external APIs
+[2025-10-27T00:14:49.812Z] [DEBUG] [currencyExchange] Attempting REST Countries v3 API
+[2025-10-27T00:14:51.754Z] [SUCCESS] [currencyExchange] Fetched 250 countries from v3 API
+[2025-10-27T00:14:51.756Z] [INFO] [currencyExchange] Fetching exchange rates from external API
+[2025-10-27T00:14:53.219Z] [SUCCESS] [currencyExchange] Fetched 165 exchange rates from API
+[2025-10-27T00:14:53.430Z] [WARN] [currencyExchange] Currency CUC not found in exchange rates for Cuba
+[2025-10-27T00:14:53.486Z] [WARN] [currencyExchange] Currency KPW not found in exchange rates for North Korea
+[2025-10-27T00:14:53.490Z] [WARN] [currencyExchange] Currency CKD not found in exchange rates for Cook Islands
+[2025-10-27T00:14:53.662Z] [SUCCESS] [currencyExchange] Summary image generated successfully
+[2025-10-27T00:14:53.679Z] [SUCCESS] [currencyExchange] Successfully processed 250 countries in 3s | Data: {
+  "total_fetched": 250,
+  "processed": 250,
+  "failed": 0,
+  "duration_seconds": 3
+}

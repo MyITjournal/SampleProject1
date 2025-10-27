@@ -10,22 +10,25 @@ import {
 
 const router = express.Router();
 
-// POST /countries/refresh - Refresh countries data
-router.post("/countries/refresh", refreshCountriesData);
+// IMPORTANT: Specific routes MUST come before parameterized routes
 
-// GET /countries/image - Summary image (must come before /:name)
-router.get("/countries/image", getCountriesSummaryImage);
-
-// GET /status - Refresh status
+// 5. GET /status - Refresh status (specific route)
 router.get("/status", getRefreshStatus);
 
-// GET /countries - Get all countries with filters
+// 6. GET /countries/image - Summary image (specific route)
+router.get("/countries/image", getCountriesSummaryImage);
+
+// 1. POST /countries/refresh - Refresh countries data (specific route)
+router.post("/countries/refresh", refreshCountriesData);
+
+// 2. GET /countries - Get all countries with filters (specific route)
 router.get("/countries", getAllCountries);
 
-// GET /countries/:name - Get country by name
+// Parameterized routes MUST come last
+// 3. GET /countries/:name - Get country by name
 router.get("/countries/:name", getCountryByName);
 
-// DELETE /countries/:name - Delete country
+// 4. DELETE /countries/:name - Delete country
 router.delete("/countries/:name", deleteCountry);
 
 export default router;

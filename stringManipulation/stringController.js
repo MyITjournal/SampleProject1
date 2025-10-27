@@ -1,6 +1,10 @@
 import pg from "pg";
 import dotenv from "dotenv";
 import crypto from "crypto";
+import { createLogger } from "../utils/logger.js";
+
+// Create logger for this module
+const logger = createLogger("stringManipulation");
 
 const { Pool } = pg;
 dotenv.config();
@@ -69,8 +73,16 @@ const analyzeString = (text) => {
 
 // Create string entry
 export const createString = async (req, res) => {
+  const startTime = Date.now();
+
   try {
     const { value } = req.body;
+
+    await logger.info("Creating new string entry", {
+      value_length: value?.length,
+      value_preview:
+        value?.substring(0, 50) + (value?.length > 50 ? "..." : ""),
+    });
 
     // Validation - 400 Bad Request for missing field
     if (!value) {
@@ -108,6 +120,11 @@ export const createString = async (req, res) => {
     );
 
     if (existingCheck.rows.length > 0) {
+      await logger.warn("Attempted to create duplicate string", {
+        hash: sha256Hash,
+        value_preview: value.substring(0, 50),
+      });
+
       return res.status(409).json({
         status: "error",
         message: "Conflict: String already exists in the system",
@@ -155,6 +172,20 @@ export const createString = async (req, res) => {
 
     const result = await pool.query(query, values);
     const row = result.rows[0];
+    const duration = Date.now() - startTime;
+
+    await logger.success("String created successfully", {
+      hash: sha256Hash,
+      length: analysis.length,
+      is_palindrome: analysis.isPalindrome,
+      word_count: analysis.words,
+      duration_ms: duration,
+    });
+
+    await logger.dbLog("INSERT", "strings", duration, 1, {
+      hash: sha256Hash,
+      properties: analysis,
+    });
 
     return res.status(201).json({
       id: row.id,
@@ -170,7 +201,13 @@ export const createString = async (req, res) => {
       created_at: row.createdAt,
     });
   } catch (error) {
-    console.error("Error creating string:", error);
+    const duration = Date.now() - startTime;
+    await logger.error("Error creating string", {
+      error: error.message,
+      duration_ms: duration,
+      request_body: req.body,
+    });
+
     return res.status(500).json({
       status: "error",
       message: "Internal server error",

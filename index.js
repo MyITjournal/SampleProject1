@@ -30,11 +30,11 @@ app.use("/dbuser", randomdbUserRouter);
 //Service Users (For CRUD operation on the Users table)
 app.use("/service", serviceUsersRouter);
 
-// String manipulation routes (DEFAULT - no prefix, must come last)
-app.use("/strex", stringRouter);
-
 // Currency Exchange routes (at root level)
 app.use("/", currencyExchangeRouter);
+
+// String manipulation routes (DEFAULT - no prefix, must come last)
+app.use("/", stringRouter);
 
 // Export the app for use in other files
 export default app;
