@@ -1,6 +1,10 @@
 import pg from "pg";
 import dotenv from "dotenv";
 import crypto from "crypto";
+import { createLogger } from "../utils/logger.js";
+
+// Create logger for this module
+const logger = createLogger("stringManipulation");
 
 const { Pool } = pg;
 dotenv.config();
@@ -69,32 +73,34 @@ const analyzeString = (text) => {
 
 // Create string entry
 export const createString = async (req, res) => {
+  const startTime = Date.now();
+
   try {
     const { value } = req.body;
+
+    await logger.info("Creating new string entry", {
+      value_length: value?.length,
+      value_preview:
+        value?.substring(0, 50) + (value?.length > 50 ? "..." : ""),
+    });
 
     // Validation - 400 Bad Request for missing field
     if (!value) {
       return res.status(400).json({
-        status: "error",
-        message: "Bad Request: Missing 'value' field in request body",
-        timestamp: new Date().toISOString(),
+        error: "Validation failed",
       });
     }
 
-    // Validation - 422 Unprocessable Entity for invalid data type
+    // Validation - 400 for invalid data type (changed from 422)
     if (typeof value !== "string") {
-      return res.status(422).json({
-        status: "error",
-        message: "Unprocessable Entity: 'value' must be a string",
-        timestamp: new Date().toISOString(),
+      return res.status(400).json({
+        error: "Validation failed",
       });
     }
 
     if (value.trim().length === 0) {
       return res.status(400).json({
-        status: "error",
-        message: "Bad Request: 'value' cannot be empty",
-        timestamp: new Date().toISOString(),
+        error: "Validation failed",
       });
     }
 
@@ -108,6 +114,11 @@ export const createString = async (req, res) => {
     );
 
     if (existingCheck.rows.length > 0) {
+      await logger.warn("Attempted to create duplicate string", {
+        hash: sha256Hash,
+        value_preview: value.substring(0, 50),
+      });
+
       return res.status(409).json({
         status: "error",
         message: "Conflict: String already exists in the system",
@@ -155,6 +166,20 @@ export const createString = async (req, res) => {
 
     const result = await pool.query(query, values);
     const row = result.rows[0];
+    const duration = Date.now() - startTime;
+
+    await logger.success("String created successfully", {
+      hash: sha256Hash,
+      length: analysis.length,
+      is_palindrome: analysis.isPalindrome,
+      word_count: analysis.words,
+      duration_ms: duration,
+    });
+
+    await logger.dbLog("INSERT", "strings", duration, 1, {
+      hash: sha256Hash,
+      properties: analysis,
+    });
 
     return res.status(201).json({
       id: row.id,
@@ -170,11 +195,15 @@ export const createString = async (req, res) => {
       created_at: row.createdAt,
     });
   } catch (error) {
-    console.error("Error creating string:", error);
+    const duration = Date.now() - startTime;
+    await logger.error("Error creating string", {
+      error: error.message,
+      duration_ms: duration,
+      request_body: req.body,
+    });
+
     return res.status(500).json({
-      status: "error",
-      message: "Internal server error",
-      timestamp: new Date().toISOString(),
+      error: "Internal server error",
     });
   }
 };
@@ -188,10 +217,7 @@ export const getStringById = async (req, res) => {
     const sha256Regex = /^[a-f0-9]{64}$/i;
     if (!sha256Regex.test(id)) {
       return res.status(400).json({
-        status: "error",
-        message:
-          "Invalid ID format. Expected SHA-256 hash (64 hexadecimal characters)",
-        timestamp: new Date().toISOString(),
+        error: "Validation failed",
       });
     }
 
@@ -218,9 +244,7 @@ export const getStringById = async (req, res) => {
 
     if (result.rows.length === 0) {
       return res.status(404).json({
-        status: "error",
-        message: "Not Found: String does not exist in the system",
-        timestamp: new Date().toISOString(),
+        error: "String not found",
       });
     }
 
@@ -242,9 +266,7 @@ export const getStringById = async (req, res) => {
   } catch (error) {
     console.error("Error fetching string:", error);
     return res.status(500).json({
-      status: "error",
-      message: "Internal server error",
-      timestamp: new Date().toISOString(),
+      error: "Internal server error",
     });
   }
 };
@@ -260,9 +282,7 @@ export const getStringByValue = async (req, res) => {
     // Validation
     if (!value || typeof value !== "string") {
       return res.status(400).json({
-        status: "error",
-        message: "Bad Request: Invalid string value",
-        timestamp: new Date().toISOString(),
+        error: "Validation failed",
       });
     }
 
@@ -292,9 +312,7 @@ export const getStringByValue = async (req, res) => {
 
     if (result.rows.length === 0) {
       return res.status(404).json({
-        status: "error",
-        message: "Not Found: String does not exist in the system",
-        timestamp: new Date().toISOString(),
+        error: "String not found",
       });
     }
 
@@ -316,9 +334,7 @@ export const getStringByValue = async (req, res) => {
   } catch (error) {
     console.error("Error fetching string:", error);
     return res.status(500).json({
-      status: "error",
-      message: "Internal server error",
-      timestamp: new Date().toISOString(),
+      error: "Internal server error",
     });
   }
 };
@@ -522,9 +538,7 @@ export const getAllStrings = async (req, res) => {
   } catch (error) {
     console.error("Error fetching strings:", error);
     return res.status(500).json({
-      status: "error",
-      message: "Internal server error",
-      timestamp: new Date().toISOString(),
+      error: "Internal server error",
     });
   }
 };
@@ -540,13 +554,11 @@ export const deleteString = async (req, res) => {
     // Validation
     if (!value || typeof value !== "string") {
       return res.status(400).json({
-        status: "error",
-        message: "Bad Request: Invalid string value",
-        timestamp: new Date().toISOString(),
+        error: "Validation failed",
       });
     }
 
-    // Generate SHA-256 hash of the string value
+    // Generate SHA-256 hash of the string value (this was missing!)
     const sha256Hash = generateSHA256(value);
 
     const result = await pool.query(
@@ -556,9 +568,7 @@ export const deleteString = async (req, res) => {
 
     if (result.rows.length === 0) {
       return res.status(404).json({
-        status: "error",
-        message: "Not Found: String does not exist in the system",
-        timestamp: new Date().toISOString(),
+        error: "String not found",
       });
     }
 
@@ -574,9 +584,7 @@ export const deleteString = async (req, res) => {
   } catch (error) {
     console.error("Error deleting string:", error);
     return res.status(500).json({
-      status: "error",
-      message: "Internal server error",
-      timestamp: new Date().toISOString(),
+      error: "Internal server error",
     });
   }
 };
@@ -588,10 +596,7 @@ export const processNaturalQueryGet = async (req, res) => {
 
     if (!query || typeof query !== "string") {
       return res.status(400).json({
-        status: "error",
-        message:
-          "Invalid input: 'query' parameter is required and must be a string",
-        timestamp: new Date().toISOString(),
+        error: "Validation failed",
       });
     }
 
@@ -625,9 +630,7 @@ export const processNaturalQueryGet = async (req, res) => {
   } catch (error) {
     console.error("Error processing query:", error);
     return res.status(500).json({
-      status: "error",
-      message: "Internal server error",
-      timestamp: new Date().toISOString(),
+      error: "Internal server error",
     });
   }
 };
@@ -873,10 +876,7 @@ export const processNaturalQuery = async (req, res) => {
 
     if (!query || typeof query !== "string") {
       return res.status(400).json({
-        status: "error",
-        message:
-          "Invalid input: 'query' field is required and must be a string",
-        timestamp: new Date().toISOString(),
+        error: "Validation failed",
       });
     }
 
@@ -897,9 +897,7 @@ export const processNaturalQuery = async (req, res) => {
   } catch (error) {
     console.error("Error processing query:", error);
     return res.status(500).json({
-      status: "error",
-      message: "Internal server error",
-      timestamp: new Date().toISOString(),
+      error: "Internal server error",
     });
   }
 };

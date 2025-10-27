@@ -1,0 +1,852 @@
+[2025-10-26T22:51:47.285Z] [INFO] [currencyExchange] Starting countries data refresh
+[2025-10-26T22:51:47.288Z] [INFO] [currencyExchange] Fetching countries data from external APIs
+[2025-10-26T22:51:47.289Z] [DEBUG] [currencyExchange] Attempting REST Countries v3 API
+[2025-10-26T22:51:48.949Z] [SUCCESS] [currencyExchange] Fetched 250 countries from v3 API
+[2025-10-26T22:51:48.951Z] [INFO] [currencyExchange] Fetching exchange rates from external API
+[2025-10-26T22:51:49.658Z] [SUCCESS] [currencyExchange] Fetched 165 exchange rates from API
+[2025-10-26T22:51:49.717Z] [DEBUG] [currencyExchange] Processing country: Nepal | Data: {
+  "currencies": {
+    "NPR": {
+      "name": "Nepalese rupee",
+      "symbol": "₨"
+    }
+  },
+  "index": 0
+}
+[2025-10-26T22:51:49.723Z] [DEBUG] [currencyExchange] Processing country: United Kingdom | Data: {
+  "currencies": {
+    "GBP": {
+      "name": "British pound",
+      "symbol": "£"
+    }
+  },
+  "index": 1
+}
+[2025-10-26T22:51:49.727Z] [DEBUG] [currencyExchange] Processing country: Qatar | Data: {
+  "currencies": {
+    "QAR": {
+      "name": "Qatari riyal",
+      "symbol": "ر.ق"
+    }
+  },
+  "index": 2
+}
+[2025-10-26T22:51:49.787Z] [DEBUG] [currencyExchange] Processing country: Panama | Data: {
+  "currencies": {
+    "PAB": {
+      "name": "Panamanian balboa",
+      "symbol": "B/."
+    },
+    "USD": {
+      "name": "United States dollar",
+      "symbol": "$"
+    }
+  },
+  "index": 37
+}
+[2025-10-26T22:51:49.791Z] [DEBUG] [currencyExchange] Processing country: Jersey | Data: {
+  "currencies": {
+    "GBP": {
+      "name": "British pound",
+      "symbol": "£"
+    },
+    "JEP": {
+      "name": "Jersey pound",
+      "symbol": "£"
+    }
+  },
+  "index": 38
+}
+[2025-10-26T22:51:49.813Z] [DEBUG] [currencyExchange] Processing country: Western Sahara | Data: {
+  "currencies": {
+    "DZD": {
+      "name": "Algerian dinar",
+      "symbol": "دج"
+    },
+    "MAD": {
+      "name": "Moroccan dirham",
+      "symbol": "DH"
+    },
+    "MRU": {
+      "name": "Mauritanian ouguiya",
+      "symbol": "UM"
+    }
+  },
+  "index": 50
+}
+[2025-10-26T22:51:49.851Z] [DEBUG] [currencyExchange] Processing country: Brunei | Data: {
+  "currencies": {
+    "BND": {
+      "name": "Brunei dollar",
+      "symbol": "$"
+    },
+    "SGD": {
+      "name": "Singapore dollar",
+      "symbol": "$"
+    }
+  },
+  "index": 77
+}
+[2025-10-26T22:51:49.860Z] [DEBUG] [currencyExchange] Processing country: Bahamas | Data: {
+  "currencies": {
+    "BSD": {
+      "name": "Bahamian dollar",
+      "symbol": "$"
+    },
+    "USD": {
+      "name": "United States dollar",
+      "symbol": "$"
+    }
+  },
+  "index": 82
+}
+[2025-10-26T22:51:49.902Z] [DEBUG] [currencyExchange] Processing country: Eswatini | Data: {
+  "currencies": {
+    "SZL": {
+      "name": "Swazi lilangeni",
+      "symbol": "L"
+    },
+    "ZAR": {
+      "name": "South African rand",
+      "symbol": "R"
+    }
+  },
+  "index": 117
+}
+[2025-10-26T22:51:49.907Z] [DEBUG] [currencyExchange] Processing country: Cuba | Data: {
+  "currencies": {
+    "CUC": {
+      "name": "Cuban convertible peso",
+      "symbol": "$"
+    },
+    "CUP": {
+      "name": "Cuban peso",
+      "symbol": "$"
+    }
+  },
+  "index": 119
+}
+[2025-10-26T22:51:49.910Z] [DEBUG] [currencyExchange] Processing country: Namibia | Data: {
+  "currencies": {
+    "NAD": {
+      "name": "Namibian dollar",
+      "symbol": "$"
+    },
+    "ZAR": {
+      "name": "South African rand",
+      "symbol": "R"
+    }
+  },
+  "index": 121
+}
+[2025-10-26T22:51:49.912Z] [DEBUG] [currencyExchange] Processing country: Faroe Islands | Data: {
+  "currencies": {
+    "DKK": {
+      "name": "Danish krone",
+      "symbol": "kr"
+    },
+    "FOK": {
+      "name": "Faroese króna",
+      "symbol": "kr"
+    }
+  },
+  "index": 122
+}
+[2025-10-26T22:51:49.949Z] [DEBUG] [currencyExchange] Processing country: Tuvalu | Data: {
+  "currencies": {
+    "AUD": {
+      "name": "Australian dollar",
+      "symbol": "$"
+    },
+    "TVD": {
+      "name": "Tuvaluan dollar",
+      "symbol": "$"
+    }
+  },
+  "index": 152
+}
+[2025-10-26T22:51:49.953Z] [DEBUG] [currencyExchange] Processing country: Cambodia | Data: {
+  "currencies": {
+    "KHR": {
+      "name": "Cambodian riel",
+      "symbol": "៛"
+    },
+    "USD": {
+      "name": "United States dollar",
+      "symbol": "$"
+    }
+  },
+  "index": 154
+}
+[2025-10-26T22:51:49.986Z] [DEBUG] [currencyExchange] Processing country: Cook Islands | Data: {
+  "currencies": {
+    "CKD": {
+      "name": "Cook Islands dollar",
+      "symbol": "$"
+    },
+    "NZD": {
+      "name": "New Zealand dollar",
+      "symbol": "$"
+    }
+  },
+  "index": 182
+}
+[2025-10-26T22:51:49.995Z] [DEBUG] [currencyExchange] Processing country: Isle of Man | Data: {
+  "currencies": {
+    "GBP": {
+      "name": "British pound",
+      "symbol": "£"
+    },
+    "IMP": {
+      "name": "Manx pound",
+      "symbol": "£"
+    }
+  },
+  "index": 188
+}
+[2025-10-26T22:51:50.000Z] [DEBUG] [currencyExchange] Processing country: Guernsey | Data: {
+  "currencies": {
+    "GBP": {
+      "name": "British pound",
+      "symbol": "£"
+    },
+    "GGP": {
+      "name": "Guernsey pound",
+      "symbol": "£"
+    }
+  },
+  "index": 192
+}
+[2025-10-26T22:51:50.049Z] [DEBUG] [currencyExchange] Processing country: Bhutan | Data: {
+  "currencies": {
+    "BTN": {
+      "name": "Bhutanese ngultrum",
+      "symbol": "Nu."
+    },
+    "INR": {
+      "name": "Indian rupee",
+      "symbol": "₹"
+    }
+  },
+  "index": 231
+}
+[2025-10-26T22:51:50.052Z] [DEBUG] [currencyExchange] Processing country: Saint Helena, Ascension and Tristan da Cunha | Data: {
+  "currencies": {
+    "GBP": {
+      "name": "Pound sterling",
+      "symbol": "£"
+    },
+    "SHP": {
+      "name": "Saint Helena pound",
+      "symbol": "£"
+    }
+  },
+  "index": 232
+}
+[2025-10-26T22:51:50.063Z] [DEBUG] [currencyExchange] Processing country: Lesotho | Data: {
+  "currencies": {
+    "LSL": {
+      "name": "Lesotho loti",
+      "symbol": "L"
+    },
+    "ZAR": {
+      "name": "South African rand",
+      "symbol": "R"
+    }
+  },
+  "index": 239
+}
+[2025-10-26T22:51:50.066Z] [DEBUG] [currencyExchange] Processing country: Kiribati | Data: {
+  "currencies": {
+    "AUD": {
+      "name": "Australian dollar",
+      "symbol": "$"
+    },
+    "KID": {
+      "name": "Kiribati dollar",
+      "symbol": "$"
+    }
+  },
+  "index": 240
+}
+[2025-10-26T22:51:50.077Z] [DEBUG] [currencyExchange] Processing country: Palestine | Data: {
+  "currencies": {
+    "EGP": {
+      "name": "Egyptian pound",
+      "symbol": "E£"
+    },
+    "ILS": {
+      "name": "Israeli new shekel",
+      "symbol": "₪"
+    },
+    "JOD": {
+      "name": "Jordanian dinar",
+      "symbol": "JD"
+    }
+  },
+  "index": 246
+}
+[2025-10-26T22:51:50.095Z] [SUCCESS] [currencyExchange] Successfully processed 244 countries in 2s | Data: {
+  "total_fetched": 250,
+  "processed": 244,
+  "failed": 6,
+  "duration_seconds": 2
+}
+[2025-10-26T22:51:50.096Z] [WARN] [currencyExchange] 6 countries failed validation | Data: {
+  "failed_countries": [
+    {
+      "name": "Heard Island and McDonald Islands",
+      "errors": {
+        "currency_code": "is required"
+      }
+    },
+    {
+      "name": "Cuba",
+      "errors": {
+        "exchange_rate": "No valid rate found for currency CUC"
+      }
+    },
+    {
+      "name": "North Korea",
+      "errors": {
+        "exchange_rate": "No valid rate found for currency KPW"
+      }
+    },
+    {
+      "name": "Cook Islands",
+      "errors": {
+        "exchange_rate": "No valid rate found for currency CKD"
+      }
+    },
+    {
+      "name": "Bouvet Island",
+      "errors": {
+        "currency_code": "is required"
+      }
+    },
+    {
+      "name": "Antarctica",
+      "errors": {
+        "currency_code": "is required"
+      }
+    }
+  ]
+}
+[2025-10-26T23:55:10.975Z] [INFO] [currencyExchange] Starting countries data refresh
+[2025-10-26T23:55:10.979Z] [INFO] [currencyExchange] Fetching countries data from external APIs
+[2025-10-26T23:55:10.981Z] [DEBUG] [currencyExchange] Attempting REST Countries v3 API
+[2025-10-26T23:55:12.624Z] [SUCCESS] [currencyExchange] Fetched 250 countries from v3 API
+[2025-10-26T23:55:12.626Z] [INFO] [currencyExchange] Fetching exchange rates from external API
+[2025-10-26T23:55:13.574Z] [SUCCESS] [currencyExchange] Fetched 165 exchange rates from API
+[2025-10-26T23:55:13.793Z] [WARN] [currencyExchange] Currency CUC not found in exchange rates for Cuba
+[2025-10-26T23:55:13.842Z] [WARN] [currencyExchange] Currency KPW not found in exchange rates for North Korea
+[2025-10-26T23:55:13.846Z] [WARN] [currencyExchange] Currency CKD not found in exchange rates for Cook Islands
+[2025-10-26T23:55:13.988Z] [ERROR] [currencyExchange] Failed to generate summary image | Data: {
+  "error": "column \"countries.name\" must appear in the GROUP BY clause or be used in an aggregate function"
+}
+[2025-10-26T23:55:13.993Z] [SUCCESS] [currencyExchange] Successfully processed 250 countries in 3s | Data: {
+  "total_fetched": 250,
+  "processed": 250,
+  "failed": 0,
+  "duration_seconds": 3
+}
+[2025-10-27T00:14:49.804Z] [INFO] [currencyExchange] Starting countries data refresh
+[2025-10-27T00:14:49.810Z] [INFO] [currencyExchange] Fetching countries data from external APIs
+[2025-10-27T00:14:49.812Z] [DEBUG] [currencyExchange] Attempting REST Countries v3 API
+[2025-10-27T00:14:51.754Z] [SUCCESS] [currencyExchange] Fetched 250 countries from v3 API
+[2025-10-27T00:14:51.756Z] [INFO] [currencyExchange] Fetching exchange rates from external API
+[2025-10-27T00:14:53.219Z] [SUCCESS] [currencyExchange] Fetched 165 exchange rates from API
+[2025-10-27T00:14:53.430Z] [WARN] [currencyExchange] Currency CUC not found in exchange rates for Cuba
+[2025-10-27T00:14:53.486Z] [WARN] [currencyExchange] Currency KPW not found in exchange rates for North Korea
+[2025-10-27T00:14:53.490Z] [WARN] [currencyExchange] Currency CKD not found in exchange rates for Cook Islands
+[2025-10-27T00:14:53.662Z] [SUCCESS] [currencyExchange] Summary image generated successfully
+[2025-10-27T00:14:53.679Z] [SUCCESS] [currencyExchange] Successfully processed 250 countries in 3s | Data: {
+  "total_fetched": 250,
+  "processed": 250,
+  "failed": 0,
+  "duration_seconds": 3
+}
+[2025-10-27T16:44:29.292Z] [INFO] [currencyExchange] Starting countries data refresh
+[2025-10-27T16:44:29.299Z] [INFO] [currencyExchange] Fetching countries data from external APIs
+[2025-10-27T16:44:29.302Z] [DEBUG] [currencyExchange] Attempting REST Countries v3 API
+[2025-10-27T16:44:31.512Z] [SUCCESS] [currencyExchange] Fetched 250 countries from v3 API
+[2025-10-27T16:44:31.517Z] [INFO] [currencyExchange] Fetching exchange rates from external API
+[2025-10-27T16:44:32.501Z] [SUCCESS] [currencyExchange] Fetched 165 exchange rates from API
+[2025-10-27T16:44:32.843Z] [WARN] [currencyExchange] Currency CUC not found in exchange rates for Cuba
+[2025-10-27T16:44:32.930Z] [WARN] [currencyExchange] Currency KPW not found in exchange rates for North Korea
+[2025-10-27T16:44:32.939Z] [WARN] [currencyExchange] Currency CKD not found in exchange rates for Cook Islands
+[2025-10-27T16:44:33.248Z] [SUCCESS] [currencyExchange] Summary image generated successfully
+[2025-10-27T16:44:33.253Z] [SUCCESS] [currencyExchange] Successfully processed 250 countries in 3s | Data: {
+  "total_fetched": 250,
+  "processed": 250,
+  "failed": 0,
+  "duration_seconds": 3
+}
+[2025-10-27T16:52:52.539Z] [INFO] [currencyExchange] Starting countries data refresh
+[2025-10-27T16:52:52.543Z] [INFO] [currencyExchange] Fetching countries data from external APIs
+[2025-10-27T16:52:52.545Z] [DEBUG] [currencyExchange] Attempting REST Countries v2 API
+[2025-10-27T16:52:53.791Z] [SUCCESS] [currencyExchange] Fetched 250 countries from v3 API
+[2025-10-27T16:52:53.794Z] [INFO] [currencyExchange] Fetching exchange rates from external API
+[2025-10-27T16:52:54.732Z] [SUCCESS] [currencyExchange] Fetched 165 exchange rates from API
+[2025-10-27T16:52:54.736Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Afghanistan
+[2025-10-27T16:52:54.746Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Åland Islands
+[2025-10-27T16:52:54.750Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Albania
+[2025-10-27T16:52:54.754Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Algeria
+[2025-10-27T16:52:54.758Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for American Samoa
+[2025-10-27T16:52:54.763Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Andorra
+[2025-10-27T16:52:54.767Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Angola
+[2025-10-27T16:52:54.772Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Anguilla
+[2025-10-27T16:52:54.790Z] [ERROR] [currencyExchange] Database transaction failed during countries processing | Data: {
+  "error": "n is not defined",
+  "processed_count": 8
+}
+[2025-10-27T16:52:54.795Z] [ERROR] [currencyExchange] Critical error in refreshCountriesData | Data: {
+  "error": "n is not defined",
+  "stack": "ReferenceError: n is not defined\n    at refreshCountriesData (file:///C:/Users/USER/Documents/SW_Dev/Project1/currencyExchange/countryController.js:288:11)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)",
+  "duration": 2
+}
+[2025-10-27T16:54:10.418Z] [INFO] [currencyExchange] Starting countries data refresh
+[2025-10-27T16:54:10.421Z] [INFO] [currencyExchange] Fetching countries data from external APIs
+[2025-10-27T16:54:10.423Z] [DEBUG] [currencyExchange] Attempting REST Countries v2 API
+[2025-10-27T16:54:11.953Z] [SUCCESS] [currencyExchange] Fetched 250 countries from v3 API
+[2025-10-27T16:54:11.956Z] [INFO] [currencyExchange] Fetching exchange rates from external API
+[2025-10-27T16:54:12.872Z] [SUCCESS] [currencyExchange] Fetched 165 exchange rates from API
+[2025-10-27T16:54:12.875Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Afghanistan
+[2025-10-27T16:54:12.881Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Åland Islands
+[2025-10-27T16:54:12.885Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Albania
+[2025-10-27T16:54:12.888Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Algeria
+[2025-10-27T16:54:12.891Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for American Samoa
+[2025-10-27T16:54:12.895Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Andorra
+[2025-10-27T16:54:12.898Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Angola
+[2025-10-27T16:54:12.902Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Anguilla
+[2025-10-27T16:54:12.906Z] [ERROR] [currencyExchange] Database transaction failed during countries processing | Data: {
+  "error": "n is not defined",
+  "processed_count": 8
+}
+[2025-10-27T16:54:12.910Z] [ERROR] [currencyExchange] Critical error in refreshCountriesData | Data: {
+  "error": "n is not defined",
+  "stack": "ReferenceError: n is not defined\n    at refreshCountriesData (file:///C:/Users/USER/Documents/SW_Dev/Project1/currencyExchange/countryController.js:288:11)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)",
+  "duration": 2
+}
+[2025-10-27T16:57:53.807Z] [INFO] [currencyExchange] Starting countries data refresh
+[2025-10-27T16:57:53.812Z] [INFO] [currencyExchange] Fetching countries data from external APIs
+[2025-10-27T16:57:53.813Z] [DEBUG] [currencyExchange] Attempting REST Countries v2 API
+[2025-10-27T16:57:55.258Z] [SUCCESS] [currencyExchange] Fetched 250 countries from v3 API
+[2025-10-27T16:57:55.263Z] [INFO] [currencyExchange] Fetching exchange rates from external API
+[2025-10-27T16:57:56.272Z] [SUCCESS] [currencyExchange] Fetched 165 exchange rates from API
+[2025-10-27T16:57:56.395Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Afghanistan
+[2025-10-27T16:57:56.407Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Åland Islands
+[2025-10-27T16:57:56.412Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Albania
+[2025-10-27T16:57:56.419Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Algeria
+[2025-10-27T16:57:56.424Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for American Samoa
+[2025-10-27T16:57:56.430Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Andorra
+[2025-10-27T16:57:56.435Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Angola
+[2025-10-27T16:57:56.440Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Anguilla
+[2025-10-27T16:57:56.448Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Antigua and Barbuda
+[2025-10-27T16:57:56.452Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Argentina
+[2025-10-27T16:57:56.456Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Armenia
+[2025-10-27T16:57:56.460Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Aruba
+[2025-10-27T16:57:56.464Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Australia
+[2025-10-27T16:57:56.469Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Austria
+[2025-10-27T16:57:56.472Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Azerbaijan
+[2025-10-27T16:57:56.475Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Bahamas
+[2025-10-27T16:57:56.478Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Bahrain
+[2025-10-27T16:57:56.481Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Bangladesh
+[2025-10-27T16:57:56.483Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Barbados
+[2025-10-27T16:57:56.487Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Belarus
+[2025-10-27T16:57:56.490Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Belgium
+[2025-10-27T16:57:56.493Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Belize
+[2025-10-27T16:57:56.496Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Benin
+[2025-10-27T16:57:56.499Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Bermuda
+[2025-10-27T16:57:56.503Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Bhutan
+[2025-10-27T16:57:56.505Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Bolivia (Plurinational State of)
+[2025-10-27T16:57:56.508Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Bonaire, Sint Eustatius and Saba
+[2025-10-27T16:57:56.511Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Bosnia and Herzegovina
+[2025-10-27T16:57:56.514Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Botswana
+[2025-10-27T16:57:56.517Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Bouvet Island
+[2025-10-27T16:57:56.519Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Brazil
+[2025-10-27T16:57:56.521Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for British Indian Ocean Territory
+[2025-10-27T16:57:56.523Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for United States Minor Outlying Islands
+[2025-10-27T16:57:56.525Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Virgin Islands (British)
+[2025-10-27T16:57:56.528Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Virgin Islands (U.S.)
+[2025-10-27T16:57:56.531Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Brunei Darussalam
+[2025-10-27T16:57:56.533Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Bulgaria
+[2025-10-27T16:57:56.535Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Burkina Faso
+[2025-10-27T16:57:56.536Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Burundi
+[2025-10-27T16:57:56.539Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Cambodia
+[2025-10-27T16:57:56.541Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Cameroon
+[2025-10-27T16:57:56.543Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Canada
+[2025-10-27T16:57:56.547Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Cabo Verde
+[2025-10-27T16:57:56.549Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Cayman Islands
+[2025-10-27T16:57:56.551Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Central African Republic
+[2025-10-27T16:57:56.553Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Chad
+[2025-10-27T16:57:56.555Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Chile
+[2025-10-27T16:57:56.557Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for China
+[2025-10-27T16:57:56.559Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Christmas Island
+[2025-10-27T16:57:56.561Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Cocos (Keeling) Islands
+[2025-10-27T16:57:56.564Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Colombia
+[2025-10-27T16:57:56.566Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Comoros
+[2025-10-27T16:57:56.568Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Congo
+[2025-10-27T16:57:56.569Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Congo (Democratic Republic of the)
+[2025-10-27T16:57:56.572Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Cook Islands
+[2025-10-27T16:57:56.574Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Costa Rica
+[2025-10-27T16:57:56.576Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Croatia
+[2025-10-27T16:57:56.579Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Cuba
+[2025-10-27T16:57:56.582Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Curaçao
+[2025-10-27T16:57:56.584Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Cyprus
+[2025-10-27T16:57:56.587Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Czech Republic
+[2025-10-27T16:57:56.589Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Denmark
+[2025-10-27T16:57:56.591Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Djibouti
+[2025-10-27T16:57:56.593Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Dominica
+[2025-10-27T16:57:56.596Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Dominican Republic
+[2025-10-27T16:57:56.598Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Ecuador
+[2025-10-27T16:57:56.601Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Egypt
+[2025-10-27T16:57:56.603Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for El Salvador
+[2025-10-27T16:57:56.605Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Equatorial Guinea
+[2025-10-27T16:57:56.607Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Eritrea
+[2025-10-27T16:57:56.608Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Estonia
+[2025-10-27T16:57:56.612Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Ethiopia
+[2025-10-27T16:57:56.614Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Falkland Islands (Malvinas)
+[2025-10-27T16:57:56.617Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Faroe Islands
+[2025-10-27T16:57:56.619Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Fiji
+[2025-10-27T16:57:56.621Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Finland
+[2025-10-27T16:57:56.622Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for France
+[2025-10-27T16:57:56.626Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for French Guiana
+[2025-10-27T16:57:56.630Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for French Polynesia
+[2025-10-27T16:57:56.632Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for French Southern Territories
+[2025-10-27T16:57:56.634Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Gabon
+[2025-10-27T16:57:56.636Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Gambia
+[2025-10-27T16:57:56.637Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Georgia
+[2025-10-27T16:57:56.639Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Germany
+[2025-10-27T16:57:56.641Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Ghana
+[2025-10-27T16:57:56.643Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Gibraltar
+[2025-10-27T16:57:56.645Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Greece
+[2025-10-27T16:57:56.647Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Greenland
+[2025-10-27T16:57:56.649Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Grenada
+[2025-10-27T16:57:56.651Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Guadeloupe
+[2025-10-27T16:57:56.653Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Guam
+[2025-10-27T16:57:56.655Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Guatemala
+[2025-10-27T16:57:56.657Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Guernsey
+[2025-10-27T16:57:56.660Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Guinea
+[2025-10-27T16:57:56.662Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Guinea-Bissau
+[2025-10-27T16:57:56.664Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Guyana
+[2025-10-27T16:57:56.666Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Haiti
+[2025-10-27T16:57:56.668Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Heard Island and McDonald Islands
+[2025-10-27T16:57:56.669Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Vatican City
+[2025-10-27T16:57:56.671Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Honduras
+[2025-10-27T16:57:56.673Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Hungary
+[2025-10-27T16:57:56.675Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Hong Kong
+[2025-10-27T16:57:56.677Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Iceland
+[2025-10-27T16:57:56.680Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for India
+[2025-10-27T16:57:56.681Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Indonesia
+[2025-10-27T16:57:56.683Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Ivory Coast
+[2025-10-27T16:57:56.685Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Iran (Islamic Republic of)
+[2025-10-27T16:57:56.687Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Iraq
+[2025-10-27T16:57:56.690Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Ireland
+[2025-10-27T16:57:56.693Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Isle of Man
+[2025-10-27T16:57:56.695Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Israel
+[2025-10-27T16:57:56.697Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Italy
+[2025-10-27T16:57:56.699Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Jamaica
+[2025-10-27T16:57:56.701Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Japan
+[2025-10-27T16:57:56.703Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Jersey
+[2025-10-27T16:57:56.705Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Jordan
+[2025-10-27T16:57:56.707Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Kazakhstan
+[2025-10-27T16:57:56.708Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Kenya
+[2025-10-27T16:57:56.711Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Kiribati
+[2025-10-27T16:57:56.713Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Kuwait
+[2025-10-27T16:57:56.715Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Kyrgyzstan
+[2025-10-27T16:57:56.717Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Lao People's Democratic Republic
+[2025-10-27T16:57:56.719Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Latvia
+[2025-10-27T16:57:56.720Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Lebanon
+[2025-10-27T16:57:56.722Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Lesotho
+[2025-10-27T16:57:56.724Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Liberia
+[2025-10-27T16:57:56.726Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Libya
+[2025-10-27T16:57:56.728Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Liechtenstein
+[2025-10-27T16:57:56.730Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Lithuania
+[2025-10-27T16:57:56.732Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Luxembourg
+[2025-10-27T16:57:56.734Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Macao
+[2025-10-27T16:57:56.736Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for North Macedonia
+[2025-10-27T16:57:56.738Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Madagascar
+[2025-10-27T16:57:56.739Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Malawi
+[2025-10-27T16:57:56.741Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Malaysia
+[2025-10-27T16:57:56.743Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Maldives
+[2025-10-27T16:57:56.745Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Mali
+[2025-10-27T16:57:56.747Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Malta
+[2025-10-27T16:57:56.749Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Marshall Islands
+[2025-10-27T16:57:56.751Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Martinique
+[2025-10-27T16:57:56.752Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Mauritania
+[2025-10-27T16:57:56.754Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Mauritius
+[2025-10-27T16:57:56.756Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Mayotte
+[2025-10-27T16:57:56.758Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Mexico
+[2025-10-27T16:57:56.760Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Micronesia (Federated States of)
+[2025-10-27T16:57:56.762Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Moldova (Republic of)
+[2025-10-27T16:57:56.764Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Monaco
+[2025-10-27T16:57:56.766Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Mongolia
+[2025-10-27T16:57:56.768Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Montenegro
+[2025-10-27T16:57:56.769Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Montserrat
+[2025-10-27T16:57:56.771Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Morocco
+[2025-10-27T16:57:56.773Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Mozambique
+[2025-10-27T16:57:56.775Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Myanmar
+[2025-10-27T16:57:56.777Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Namibia
+[2025-10-27T16:57:56.780Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Nauru
+[2025-10-27T16:57:56.782Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Nepal
+[2025-10-27T16:57:56.784Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Netherlands
+[2025-10-27T16:57:56.785Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for New Caledonia
+[2025-10-27T16:57:56.787Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for New Zealand
+[2025-10-27T16:57:56.789Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Nicaragua
+[2025-10-27T16:57:56.791Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Niger
+[2025-10-27T16:57:56.793Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Nigeria
+[2025-10-27T16:57:56.796Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Niue
+[2025-10-27T16:57:56.798Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Norfolk Island
+[2025-10-27T16:57:56.800Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Korea (Democratic People's Republic of)
+[2025-10-27T16:57:56.801Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Northern Mariana Islands
+[2025-10-27T16:57:56.803Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Norway
+[2025-10-27T16:57:56.805Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Oman
+[2025-10-27T16:57:56.807Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Pakistan
+[2025-10-27T16:57:56.808Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Palau
+[2025-10-27T16:57:56.811Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Palestine, State of
+[2025-10-27T16:57:56.814Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Panama
+[2025-10-27T16:57:56.816Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Papua New Guinea
+[2025-10-27T16:57:56.818Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Paraguay
+[2025-10-27T16:57:56.820Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Peru
+[2025-10-27T16:57:56.821Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Philippines
+[2025-10-27T16:57:56.824Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Pitcairn
+[2025-10-27T16:57:56.826Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Poland
+[2025-10-27T16:57:56.828Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Portugal
+[2025-10-27T16:57:56.830Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Puerto Rico
+[2025-10-27T16:57:56.832Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Qatar
+[2025-10-27T16:57:56.834Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Republic of Kosovo
+[2025-10-27T16:57:56.836Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Réunion
+[2025-10-27T16:57:56.838Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Romania
+[2025-10-27T16:57:56.840Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Russian Federation
+[2025-10-27T16:57:56.842Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Rwanda
+[2025-10-27T16:57:56.844Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Saint Barthélemy
+[2025-10-27T16:57:56.847Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Saint Helena, Ascension and Tristan da Cunha
+[2025-10-27T16:57:56.848Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Saint Kitts and Nevis
+[2025-10-27T16:57:56.850Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Saint Lucia
+[2025-10-27T16:57:56.852Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Saint Martin (French part)
+[2025-10-27T16:57:56.854Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Saint Pierre and Miquelon
+[2025-10-27T16:57:56.855Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Saint Vincent and the Grenadines
+[2025-10-27T16:57:56.857Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Samoa
+[2025-10-27T16:57:56.859Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for San Marino
+[2025-10-27T16:57:56.862Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Sao Tome and Principe
+[2025-10-27T16:57:56.864Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Saudi Arabia
+[2025-10-27T16:57:56.866Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Senegal
+[2025-10-27T16:57:56.868Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Serbia
+[2025-10-27T16:57:56.869Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Seychelles
+[2025-10-27T16:57:56.871Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Sierra Leone
+[2025-10-27T16:57:56.873Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Singapore
+[2025-10-27T16:57:56.874Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Sint Maarten (Dutch part)
+[2025-10-27T16:57:56.876Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Slovakia
+[2025-10-27T16:57:56.879Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Slovenia
+[2025-10-27T16:57:56.881Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Solomon Islands
+[2025-10-27T16:57:56.883Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Somalia
+[2025-10-27T16:57:56.885Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for South Africa
+[2025-10-27T16:57:56.886Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for South Georgia and the South Sandwich Islands
+[2025-10-27T16:57:56.888Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Korea (Republic of)
+[2025-10-27T16:57:56.890Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Spain
+[2025-10-27T16:57:56.893Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Sri Lanka
+[2025-10-27T16:57:56.896Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Sudan
+[2025-10-27T16:57:56.899Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for South Sudan
+[2025-10-27T16:57:56.901Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Suriname
+[2025-10-27T16:57:56.902Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Svalbard and Jan Mayen
+[2025-10-27T16:57:56.904Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Swaziland
+[2025-10-27T16:57:56.906Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Sweden
+[2025-10-27T16:57:56.907Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Switzerland
+[2025-10-27T16:57:56.909Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Syrian Arab Republic
+[2025-10-27T16:57:56.912Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Taiwan
+[2025-10-27T16:57:56.914Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Tajikistan
+[2025-10-27T16:57:56.916Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Tanzania, United Republic of
+[2025-10-27T16:57:56.918Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Thailand
+[2025-10-27T16:57:56.919Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Timor-Leste
+[2025-10-27T16:57:56.921Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Togo
+[2025-10-27T16:57:56.923Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Tokelau
+[2025-10-27T16:57:56.924Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Tonga
+[2025-10-27T16:57:56.926Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Trinidad and Tobago
+[2025-10-27T16:57:56.929Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Tunisia
+[2025-10-27T16:57:56.931Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Turkey
+[2025-10-27T16:57:56.933Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Turkmenistan
+[2025-10-27T16:57:56.935Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Turks and Caicos Islands
+[2025-10-27T16:57:56.937Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Tuvalu
+[2025-10-27T16:57:56.939Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Uganda
+[2025-10-27T16:57:56.940Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Ukraine
+[2025-10-27T16:57:56.942Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for United Arab Emirates
+[2025-10-27T16:57:56.945Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for United Kingdom of Great Britain and Northern Ireland
+[2025-10-27T16:57:56.947Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for United States of America
+[2025-10-27T16:57:56.949Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Uruguay
+[2025-10-27T16:57:56.951Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Uzbekistan
+[2025-10-27T16:57:56.952Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Vanuatu
+[2025-10-27T16:57:56.954Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Venezuela (Bolivarian Republic of)
+[2025-10-27T16:57:56.956Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Vietnam
+[2025-10-27T16:57:56.958Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Wallis and Futuna
+[2025-10-27T16:57:56.961Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Western Sahara
+[2025-10-27T16:57:56.963Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Yemen
+[2025-10-27T16:57:56.965Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Zambia
+[2025-10-27T16:57:56.967Z] [WARN] [currencyExchange] Currency 0 not found in exchange rates for Zimbabwe
+[2025-10-27T16:57:57.058Z] [SUCCESS] [currencyExchange] Summary image generated successfully
+[2025-10-27T16:57:57.075Z] [SUCCESS] [currencyExchange] Successfully processed 250 countries in 3s | Data: {
+  "total_fetched": 250,
+  "processed": 250,
+  "failed": 0,
+  "duration_seconds": 3
+}
+[2025-10-27T16:59:15.993Z] [INFO] [currencyExchange] Starting countries data refresh
+[2025-10-27T16:59:15.997Z] [INFO] [currencyExchange] Fetching countries data from external APIs
+[2025-10-27T16:59:15.999Z] [DEBUG] [currencyExchange] Attempting REST Countries v2 API
+[2025-10-27T16:59:17.877Z] [SUCCESS] [currencyExchange] Fetched 250 countries from v3 API
+[2025-10-27T16:59:17.879Z] [INFO] [currencyExchange] Fetching exchange rates from external API
+[2025-10-27T16:59:18.555Z] [SUCCESS] [currencyExchange] Fetched 165 exchange rates from API
+[2025-10-27T16:59:18.794Z] [WARN] [currencyExchange] Currency CUC not found in exchange rates for Cuba
+[2025-10-27T16:59:18.868Z] [WARN] [currencyExchange] Currency KPW not found in exchange rates for North Korea
+[2025-10-27T16:59:18.876Z] [WARN] [currencyExchange] Currency CKD not found in exchange rates for Cook Islands
+[2025-10-27T16:59:19.149Z] [SUCCESS] [currencyExchange] Summary image generated successfully
+[2025-10-27T16:59:19.167Z] [SUCCESS] [currencyExchange] Successfully processed 250 countries in 3s | Data: {
+  "total_fetched": 250,
+  "processed": 250,
+  "failed": 0,
+  "duration_seconds": 3
+}
+[2025-10-27T17:02:33.019Z] [INFO] [currencyExchange] Starting countries data refresh
+[2025-10-27T17:02:33.027Z] [INFO] [currencyExchange] Fetching countries data from external APIs
+[2025-10-27T17:02:33.030Z] [DEBUG] [currencyExchange] Attempting REST Countries v2 API
+[2025-10-27T17:02:34.679Z] [SUCCESS] [currencyExchange] Fetched 250 countries from v3 API
+[2025-10-27T17:02:34.683Z] [INFO] [currencyExchange] Fetching exchange rates from external API
+[2025-10-27T17:02:35.304Z] [SUCCESS] [currencyExchange] Fetched 165 exchange rates from API
+[2025-10-27T17:02:35.550Z] [ERROR] [currencyExchange] Database transaction failed during countries processing | Data: {
+  "error": "constraint \"idx_countries_name_unique\" for table \"countries\" does not exist",
+  "processed_count": 0
+}
+[2025-10-27T17:02:35.557Z] [ERROR] [currencyExchange] Critical error in refreshCountriesData | Data: {
+  "error": "constraint \"idx_countries_name_unique\" for table \"countries\" does not exist",
+  "stack": "error: constraint \"idx_countries_name_unique\" for table \"countries\" does not exist\n    at C:\\Users\\USER\\Documents\\SW_Dev\\Project1\\node_modules\\pg\\lib\\client.js:545:17\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async refreshCountriesData (file:///C:/Users/USER/Documents/SW_Dev/Project1/currencyExchange/countryController.js:320:9)",
+  "duration": 2
+}
+[2025-10-27T17:02:51.697Z] [INFO] [currencyExchange] Starting countries data refresh
+[2025-10-27T17:02:51.704Z] [INFO] [currencyExchange] Fetching countries data from external APIs
+[2025-10-27T17:02:51.706Z] [DEBUG] [currencyExchange] Attempting REST Countries v2 API
+[2025-10-27T17:02:53.791Z] [SUCCESS] [currencyExchange] Fetched 250 countries from v3 API
+[2025-10-27T17:02:53.793Z] [INFO] [currencyExchange] Fetching exchange rates from external API
+[2025-10-27T17:02:54.388Z] [SUCCESS] [currencyExchange] Fetched 165 exchange rates from API
+[2025-10-27T17:02:54.760Z] [WARN] [currencyExchange] Currency CUC not found in exchange rates for Cuba
+[2025-10-27T17:02:54.872Z] [WARN] [currencyExchange] Currency KPW not found in exchange rates for North Korea
+[2025-10-27T17:02:54.882Z] [WARN] [currencyExchange] Currency CKD not found in exchange rates for Cook Islands
+[2025-10-27T17:02:55.245Z] [SUCCESS] [currencyExchange] Summary image generated successfully
+[2025-10-27T17:02:55.252Z] [SUCCESS] [currencyExchange] Successfully processed 250 countries in 3s | Data: {
+  "total_fetched": 250,
+  "processed": 250,
+  "failed": 0,
+  "duration_seconds": 3
+}
+[2025-10-27T17:18:34.108Z] [INFO] [currencyExchange] Starting countries data refresh
+[2025-10-27T17:18:34.112Z] [INFO] [currencyExchange] Fetching countries data from external APIs
+[2025-10-27T17:18:34.113Z] [DEBUG] [currencyExchange] Attempting REST Countries v2 API
+[2025-10-27T17:18:35.498Z] [SUCCESS] [currencyExchange] Fetched 250 countries from v3 API
+[2025-10-27T17:18:35.499Z] [INFO] [currencyExchange] Fetching exchange rates from external API
+[2025-10-27T17:18:36.261Z] [SUCCESS] [currencyExchange] Fetched 165 exchange rates from API
+[2025-10-27T17:18:36.389Z] [WARN] [currencyExchange] Currency CUC not found in exchange rates for Cuba
+[2025-10-27T17:18:36.421Z] [WARN] [currencyExchange] Currency KPW not found in exchange rates for North Korea
+[2025-10-27T17:18:36.425Z] [WARN] [currencyExchange] Currency CKD not found in exchange rates for Cook Islands
+[2025-10-27T17:18:37.677Z] [SUCCESS] [currencyExchange] Summary image generated successfully as PNG
+[2025-10-27T17:18:37.680Z] [SUCCESS] [currencyExchange] Successfully processed 250 countries in 3s | Data: {
+  "total_fetched": 250,
+  "processed": 250,
+  "failed": 0,
+  "duration_seconds": 3
+}
+[2025-10-27T17:24:50.209Z] [INFO] [currencyExchange] Starting countries data refresh
+[2025-10-27T17:24:50.211Z] [INFO] [currencyExchange] Fetching countries data from external APIs
+[2025-10-27T17:24:50.212Z] [DEBUG] [currencyExchange] Attempting REST Countries v2 API
+[2025-10-27T17:24:51.657Z] [SUCCESS] [currencyExchange] Fetched 250 countries from v3 API
+[2025-10-27T17:24:51.658Z] [INFO] [currencyExchange] Fetching exchange rates from external API
+[2025-10-27T17:24:55.780Z] [SUCCESS] [currencyExchange] Fetched 165 exchange rates from API
+[2025-10-27T17:24:55.913Z] [WARN] [currencyExchange] Currency CUC not found in exchange rates for Cuba
+[2025-10-27T17:24:55.946Z] [WARN] [currencyExchange] Currency KPW not found in exchange rates for North Korea
+[2025-10-27T17:24:55.949Z] [WARN] [currencyExchange] Currency CKD not found in exchange rates for Cook Islands
+[2025-10-27T17:24:56.191Z] [SUCCESS] [currencyExchange] Summary image generated successfully as PNG
+[2025-10-27T17:24:56.193Z] [SUCCESS] [currencyExchange] Successfully processed 250 countries in 5s | Data: {
+  "total_fetched": 250,
+  "processed": 250,
+  "failed": 0,
+  "duration_seconds": 5
+}
+[2025-10-27T17:47:08.414Z] [INFO] [currencyExchange] Starting countries data refresh
+[2025-10-27T17:47:08.418Z] [INFO] [currencyExchange] Fetching countries data from external APIs
+[2025-10-27T17:47:08.418Z] [DEBUG] [currencyExchange] Attempting REST Countries v2 API
+[2025-10-27T17:47:10.154Z] [SUCCESS] [currencyExchange] Fetched 250 countries from v3 API
+[2025-10-27T17:47:10.155Z] [INFO] [currencyExchange] Fetching exchange rates from external API
+[2025-10-27T17:47:11.003Z] [SUCCESS] [currencyExchange] Fetched 165 exchange rates from API
+[2025-10-27T17:47:11.135Z] [WARN] [currencyExchange] Currency CUC not found in exchange rates for Cuba
+[2025-10-27T17:47:11.168Z] [WARN] [currencyExchange] Currency KPW not found in exchange rates for North Korea
+[2025-10-27T17:47:11.171Z] [WARN] [currencyExchange] Currency CKD not found in exchange rates for Cook Islands
+[2025-10-27T17:47:11.331Z] [SUCCESS] [currencyExchange] Summary image generated successfully as PNG
+[2025-10-27T17:47:11.334Z] [SUCCESS] [currencyExchange] Successfully processed 250 countries in 2s | Data: {
+  "total_fetched": 250,
+  "processed": 250,
+  "failed": 0,
+  "duration_seconds": 2
+}
+[2025-10-27T18:07:09.588Z] [INFO] [currencyExchange] Starting countries data refresh
+[2025-10-27T18:07:09.591Z] [INFO] [currencyExchange] Fetching countries data from external APIs
+[2025-10-27T18:07:09.592Z] [DEBUG] [currencyExchange] Attempting REST Countries v2 API
+[2025-10-27T18:07:10.944Z] [SUCCESS] [currencyExchange] Fetched 250 countries from v3 API
+[2025-10-27T18:07:10.946Z] [INFO] [currencyExchange] Fetching exchange rates from external API
+[2025-10-27T18:07:11.585Z] [SUCCESS] [currencyExchange] Fetched 165 exchange rates from API
+[2025-10-27T18:07:11.718Z] [WARN] [currencyExchange] Currency CUC not found in exchange rates for Cuba
+[2025-10-27T18:07:11.748Z] [WARN] [currencyExchange] Currency KPW not found in exchange rates for North Korea
+[2025-10-27T18:07:11.751Z] [WARN] [currencyExchange] Currency CKD not found in exchange rates for Cook Islands
+[2025-10-27T18:07:11.899Z] [SUCCESS] [currencyExchange] Summary image generated successfully as PNG
+[2025-10-27T18:07:11.903Z] [SUCCESS] [currencyExchange] Successfully processed 250 countries in 2s | Data: {
+  "total_fetched": 250,
+  "processed": 250,
+  "failed": 0,
+  "duration_seconds": 2
+}
+[2025-10-27T18:16:15.520Z] [INFO] [currencyExchange] Starting countries data refresh
+[2025-10-27T18:16:15.523Z] [INFO] [currencyExchange] Fetching countries data from external APIs
+[2025-10-27T18:16:15.524Z] [DEBUG] [currencyExchange] Attempting REST Countries v2 API
+[2025-10-27T18:16:17.148Z] [SUCCESS] [currencyExchange] Fetched 250 countries from v3 API
+[2025-10-27T18:16:17.150Z] [INFO] [currencyExchange] Fetching exchange rates from external API
+[2025-10-27T18:16:17.933Z] [SUCCESS] [currencyExchange] Fetched 165 exchange rates from API
+[2025-10-27T18:16:18.049Z] [WARN] [currencyExchange] Currency CUC not found in exchange rates for Cuba
+[2025-10-27T18:16:18.082Z] [WARN] [currencyExchange] Currency KPW not found in exchange rates for North Korea
+[2025-10-27T18:16:18.086Z] [WARN] [currencyExchange] Currency CKD not found in exchange rates for Cook Islands
+[2025-10-27T18:16:18.254Z] [SUCCESS] [currencyExchange] Summary image generated successfully as PNG
+[2025-10-27T18:16:18.271Z] [SUCCESS] [currencyExchange] Successfully processed 250 countries in 2s | Data: {
+  "total_fetched": 250,
+  "processed": 250,
+  "failed": 0,
+  "duration_seconds": 2,
+  "total_in_db": 282
+}
+[2025-10-27T19:54:43.814Z] [INFO] [currencyExchange] Starting countries data refresh
+[2025-10-27T19:54:43.825Z] [INFO] [currencyExchange] Fetching countries data from external APIs
+[2025-10-27T19:54:43.827Z] [DEBUG] [currencyExchange] Attempting REST Countries v2 API
+[2025-10-27T19:54:45.912Z] [SUCCESS] [currencyExchange] Fetched 250 countries from v3 API
+[2025-10-27T19:54:45.914Z] [INFO] [currencyExchange] Fetching exchange rates from external API
+[2025-10-27T19:54:48.147Z] [WARN] [currencyExchange] Currency CUC not found in exchange rates for Cuba
+[2025-10-27T19:54:48.266Z] [WARN] [currencyExchange] Currency KPW not found in exchange rates for North Korea
+[2025-10-27T19:54:48.278Z] [WARN] [currencyExchange] Currency CKD not found in exchange rates for Cook Islands
+[2025-10-27T19:54:48.927Z] [SUCCESS] [currencyExchange] Summary image generated successfully as PNG
+[2025-10-27T19:54:48.958Z] [SUCCESS] [currencyExchange] Successfully processed 250 countries in 5s | Data: {
+  "total_fetched": 250,
+  "processed": 250,
+  "failed": 0,
+  "duration_seconds": 5,
+  "total_in_db": 282
+}
+[2025-10-27T19:59:44.862Z] [INFO] [currencyExchange] Starting countries data refresh
+[2025-10-27T19:59:44.868Z] [INFO] [currencyExchange] Fetching countries data from external APIs
+[2025-10-27T19:59:44.869Z] [DEBUG] [currencyExchange] Attempting REST Countries v2 API
+[2025-10-27T19:59:48.249Z] [SUCCESS] [currencyExchange] Fetched 250 countries from v3 API
+[2025-10-27T19:59:48.255Z] [INFO] [currencyExchange] Fetching exchange rates from external API
+[2025-10-27T19:59:49.308Z] [WARN] [currencyExchange] Currency CUC not found in exchange rates for Cuba
+[2025-10-27T19:59:49.410Z] [WARN] [currencyExchange] Currency KPW not found in exchange rates for North Korea
+[2025-10-27T19:59:49.417Z] [WARN] [currencyExchange] Currency CKD not found in exchange rates for Cook Islands
+[2025-10-27T19:59:49.810Z] [SUCCESS] [currencyExchange] Summary image generated successfully as PNG
+[2025-10-27T19:59:49.835Z] [SUCCESS] [currencyExchange] Successfully processed 250 countries in 4s | Data: {
+  "total_fetched": 250,
+  "processed": 250,
+  "failed": 0,
+  "duration_seconds": 4,
+  "total_in_db": 250
+}

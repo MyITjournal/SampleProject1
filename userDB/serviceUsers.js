@@ -1,6 +1,10 @@
 import express from "express";
 import pg from "pg";
 import dotenv from "dotenv";
+import { createLogger } from "../utils/logger.js";
+
+// Create logger for this module
+const logger = createLogger("userDB");
 
 const { Pool } = pg;
 
@@ -42,16 +46,36 @@ pool
 
 // Define a route to fetch all users
 router.get("/users", async (req, res) => {
+  const startTime = Date.now();
+
   try {
+    await logger.info("Fetching all users");
+
     const result = await pool.query(
       "SELECT * FROM users ORDER BY created DESC"
     );
+
+    const duration = Date.now() - startTime;
+
+    await logger.success(`Retrieved ${result.rows.length} users`, {
+      count: result.rows.length,
+      duration_ms: duration,
+    });
+
+    await logger.dbLog("SELECT", "users", duration, result.rows.length);
+
     res.json({
       status: "success",
       count: result.rows.length,
       data: result.rows,
     });
   } catch (err) {
+    const duration = Date.now() - startTime;
+    await logger.error("Error fetching users", {
+      error: err.message,
+      duration_ms: duration,
+    });
+
     console.error("Error fetching data:", err);
     return res.status(500).json({
       status: "error",

@@ -1,0 +1,38 @@
+
+      <svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+        <rect width="800" height="600" fill="#f0f8ff"/>
+        <text x="400" y="50" text-anchor="middle" font-size="28" font-family="Arial" fill="#2c3e50">
+          Countries Summary Report
+        </text>
+        <text x="50" y="100" font-size="20" font-family="Arial" fill="#34495e">
+          Total Countries: 282
+        </text>
+        <text x="50" y="140" font-size="18" font-family="Arial" fill="#34495e">
+          Top 5 Countries by Estimated GDP:
+        </text>
+        
+          <text x="70" y="180" font-size="16" font-family="Arial" fill="#34495e">
+            1. United States: $448,175,572,573
+          </text>
+        
+          <text x="70" y="210" font-size="16" font-family="Arial" fill="#34495e">
+            2. China: $310,336,377,262
+          </text>
+        
+          <text x="70" y="240" font-size="16" font-family="Arial" fill="#34495e">
+            3. Germany: $175,888,389,734
+          </text>
+        
+          <text x="70" y="270" font-size="16" font-family="Arial" fill="#34495e">
+            4. Italy: $135,442,126,125
+          </text>
+        
+          <text x="70" y="300" font-size="16" font-family="Arial" fill="#34495e">
+            5. United Kingdom: $128,202,359,829
+          </text>
+        
+        <text x="400" y="550" text-anchor="middle" font-size="14" font-family="Arial" fill="#7f8c8d">
+          Generated: 2025-10-27T17:02:55.241Z
+        </text>
+      </svg>
+    
