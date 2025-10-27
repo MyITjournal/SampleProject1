@@ -1,4 +1,4 @@
--- Drop existing table if it exists
+-- Drop existing table if it exists:
 DROP TABLE IF EXISTS countries CASCADE;
 
 CREATE TABLE IF NOT EXISTS countries (

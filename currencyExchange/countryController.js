@@ -31,7 +31,7 @@ const pool = new Pool(
       }
 );
 
-// Function to generate random GDP multiplier
+// Function to generate random GDP multiplier.
 const calculate_GDP_Factor = () => {
   return Math.random() * (2000 - 1000) + 1000;
 };

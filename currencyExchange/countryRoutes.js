@@ -10,7 +10,7 @@ import {
 
 const router = express.Router();
 
-// 5. GET /status - Refresh status (specific route)
+// 5. GET /status :- Refresh status (specific route)
 router.get("/status", getRefreshStatus);
 
 // 6. GET /countries/image - Summary image (specific route)
